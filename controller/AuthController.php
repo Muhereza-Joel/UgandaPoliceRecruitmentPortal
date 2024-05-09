@@ -42,13 +42,11 @@ class AuthController
 
     public function render_home()
     {
-        $programe = $this->model->get_current_programe();
         $blade_view = new BladeView();
         $html = $blade_view->render('home', [
             'pageTitle' => "$this->app_name Welcome",
             'appName' => $this->app_name,
             'appNameFull' => $this->app_name_full,
-            'programe' => $programe['response'],
         ]);
 
         echo ($html);

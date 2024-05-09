@@ -41,15 +41,15 @@ class User
     public  function login()
     {
         $request = Request::capture();
-        
+
         $username = $request->input('username');
         $password = $request->input('password');
-        
+
         if (!empty($username) && !empty($password)) {
-            
+
             $new_user = new User();
             $user = $new_user->get_user($username, $username);
-            
+
             if ($user && password_verify($password, $user['password'])) {
                 Session::start();
                 if ($user['profile_created'] == true) {
@@ -76,7 +76,6 @@ class User
                     'user_id' => Session::get('user_id'),
                 ];
                 $httpStatus = 200;
-               
             } else {
 
                 // Authentication failed
@@ -238,9 +237,9 @@ class User
     }
 
     public function save_profile()
-    { 
-        
-        
+    {
+
+
         $request = Request::capture();
 
         $image_url = $request->input('image_url');
@@ -332,8 +331,6 @@ class User
         $stmt->close();
     }
 
-
-
     public function update_profile()
     {
         $request = Request::capture();
@@ -344,28 +341,56 @@ class User
         $district = $request->input('district');
         $village = $request->input('village');
         $phone = $request->input('phone');
+        $about = $request->input('about');
+        $email = $request->input('email');
         $dob = $request->input('dob');
         $gender = $request->input('gender');
-        $about = $request->input('about');
         $company = $request->input('company');
         $job = $request->input('job');
 
         $user_id = Session::get('user_id');
 
-        $profile_update_query = "UPDATE user_profile
+        $email_update_query = "UPDATE app_users SET email = ? WHERE id = ?";
+
+        $this->database->begin_transaction();
+
+        $stmt = $this->database->prepare($email_update_query);
+        $stmt->bind_param("si", $email, $user_id);
+        $stmt->execute();
+
+        echo $this->database->error;
+
+        if ($stmt->affected_rows >= 0) {
+            $profile_update_query = "UPDATE user_profile
                                 SET name = ?, nin = ?, dob = ?, gender = ?, about = ?, company = ?, job = ?, country = ?, district = ?, village = ?, phone = ?
                                 WHERE user_id = ?";
 
-        $stmt2 = $this->database->prepare($profile_update_query);
-        $stmt2->bind_param("sssssssssssi", $fullname, $nin, $dob, $gender, $about, $company, $job, $country, $district, $village, $phone,  $user_id);
-        $stmt2->execute();
+            $stmt2 = $this->database->prepare($profile_update_query);
+            $stmt2->bind_param("sssssssssssi", $fullname, $nin, $dob, $gender, $about, $company, $job, $country, $district, $village, $phone,  $user_id);
+            $stmt2->execute();
 
+            if ($stmt2->affected_rows >= 0) {
+                $this->database->commit();
 
-        $response = ['message' => 'Profile data updated successfully', 'status' => '200'];
-        $httpStatus = 200;
-        Request::send_response($httpStatus, $response);
+                $response = ['message' => 'Profile data updated successfully', 'status' => '200'];
+                $httpStatus = 200;
+                Request::send_response($httpStatus, $response);
+            } else {
+                $this->database->rollback();
+
+                $response = ['message' => $this->database->error];
+                $httpStatus = 401;
+                Request::send_response($httpStatus, $response);
+            }
+
+            $stmt2->close();
+        } else {
+            $this->database->rollback();
+            $response = ['message' => $this->database->error];
+            $httpStatus = 401;
+            Request::send_response($httpStatus, $response);
+        }
     }
-
 
     public function update_photo()
     {
