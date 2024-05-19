@@ -12,7 +12,7 @@ use view\BladeView;
 
 class AuthController
 {
-   
+
     private $app_name;
     private $app_name_full;
     private $app_base_url;
@@ -27,7 +27,7 @@ class AuthController
         $this->user_model = new User();
         $this->model = new Model();
     }
-    
+
     public function index()
     {
         $blade_view = new BladeView();
@@ -80,7 +80,7 @@ class AuthController
 
     public function render_show_profile_view()
     {
-      
+
         $userDetails = $this->user_model->get_all_user_data(Session::get('user_id'));
 
         $blade_view = new BladeView();
@@ -100,7 +100,7 @@ class AuthController
 
     public function sign_in_user()
     {
-       
+
         $this->user_model->login();
     }
 
@@ -112,7 +112,7 @@ class AuthController
 
     public function create_account()
     {
-      
+
         $this->user_model->add_user();
     }
 
@@ -132,50 +132,82 @@ class AuthController
         }
     }
 
+    public function upload_pdf()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['pdf'])) {
+            $maxSize = 5 * 1024 * 1024; // 5MB in bytes
+            $fileSize = $_FILES['pdf']['size'];
+
+            if ($fileSize > $maxSize) {
+                http_response_code(400);
+                echo 'File size exceeds the maximum limit of 5MB.';
+                return;
+            }
+
+            $request = Request::capture();
+            $application_id = $request->input('application_id');
+
+            $uploader = new Uploader('pdf');
+            $uploader->save_in("../$this->app_name/uploads/files/");
+            
+            if ($uploader->save()) {
+
+                $url = "$this->app_base_url/$this->app_name/uploads/files/" . $uploader->get_file_name();
+                $result = $this->user_model->save_file_url(Session::get('user_id'), $url, $application_id);
+
+                Request::send_response($result['httpStatus'], $result['response']);
+            } else {
+                http_response_code(500);
+                echo 'Error uploading PDF.';
+            }
+        }
+    }
+
+
     public function check_nin()
     {
-        
+
         $this->user_model->check_nin();
     }
     public function check_email()
     {
-        
+
         $this->user_model->check_email();
     }
 
     public function save_profile()
     {
-        
+
         $this->user_model->save_profile();
     }
 
     public function update_profile()
     {
-        
+
         $this->user_model->update_profile();
     }
 
     public function update_photo()
     {
-       
+
         $this->user_model->update_photo();
     }
 
     public function check_password($password)
     {
-        
+
         $this->user_model->check_password($password);
     }
 
     public function change_password()
     {
-        
+
         $this->user_model->change_password();
     }
 
     public function get_user_details()
     {
-        
+
         $userDetails = $this->user_model->get_all_user_data(Session::get('user_id'));
         Request::send_response(200, $userDetails);
     }

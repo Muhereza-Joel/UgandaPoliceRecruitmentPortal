@@ -4,17 +4,20 @@ namespace controller;
 
 use core\Request;
 use model\JobPosition;
+use model\Model;
 
 class JobsController
 {
 
     private $request;
     private $jobObject;
+    private $model;
 
     public function __construct()
     {
         $this->request = new Request();
         $this->jobObject = new JobPosition();
+        $this->model = new Model();
     }
 
     public function create()
@@ -26,6 +29,11 @@ class JobsController
             ->setResponsibilities($this->request->input('responsibilities'))
             ->save();
             
+        Request::send_response($result['httpStatus'], $result['response']);
+    }
+
+    public function applications_create($position_id){
+        $result = $this->model->create_application($position_id);
         Request::send_response($result['httpStatus'], $result['response']);
     }
 

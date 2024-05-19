@@ -392,6 +392,28 @@ class User
         }
     }
 
+    public function save_file_url($user_id, $url, $application_id)
+    {
+
+        $query = "INSERT INTO files(user_id, url, application_id) VALUES(?, ?, ?)";
+
+        $stmt = $this->database->prepare($query);
+        $stmt->bind_param("isi", $user_id, $url, $application_id);
+        $stmt->execute();
+
+        if ($stmt->affected_rows > 0) {
+            $response = ['message' => 'Url saved successfully'];
+            $httpStatus = 200;
+            return ['httpStatus' => $httpStatus, 'response' => $response];
+        } else {
+            $response = ['error' => $this->database->error];
+            $httpStatus = 500;
+            return ['httpStatus' => $httpStatus, 'response' => $response];
+        }
+
+        
+    }
+
     public function update_photo()
     {
         $request = Request::capture();

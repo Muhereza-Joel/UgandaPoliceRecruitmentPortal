@@ -12,6 +12,7 @@ Route::post("/$app_name/auth/create-profile/", "controller\AuthController@render
 Route::post("/$app_name/auth/login/sign-in/", "controller\AuthController@sign_in_user");
 Route::post("/$app_name/auth/create-account/", "controller\AuthController@create_account");
 Route::post("/$app_name/image-upload/", "controller\AuthController@upload_photo");
+Route::post("/$app_name/file-upload/", "controller\AuthController@upload_pdf");
 Route::post("/$app_name/auth/check-nin/", "controller\AuthController@check_nin");
 Route::post("/$app_name/auth/check-email/", "controller\AuthController@check_email");
 Route::post("/$app_name/auth/check-password/", "controller\AuthController@check_password");
@@ -31,6 +32,7 @@ Route::post("/$app_name/dashboard/", "controller\PageController@render_dashboard
 Route::post("/$app_name/job-positions/", "controller\PageController@render_job_positions");
 Route::post("/$app_name/job-positions/listing/", "controller\PageController@render_jobs");
 Route::post("/$app_name/job-positions/listing/view", "controller\PageController@render_job_details");
+Route::post("/$app_name/job-positions/listing/apply", "controller\PageController@render_job_apply");
 Route::post("/$app_name/applications/", "controller\PageController@applications");
 Route::post("/$app_name/shortlist/", "controller\PageController@render_shortlist");
 Route::post("/$app_name/exam/", "controller\PageController@render_start_exam");
@@ -42,6 +44,7 @@ Route::post("/$app_name/users/", "controller\PageController@render_users");
 
 //Routes for jobs controller
 Route::post("/$app_name/jobs/create/", "controller\JobsController@create");
+Route::post("/$app_name/jobs/applications/create/", "controller\JobsController@applications_create");
 Route::post("/$app_name/jobs/", "controller\JobsController@read_all");
 Route::post("/$app_name/jobs/read-one/", "controller\JobsController@read_one");
 Route::post("/$app_name/jobs/update/", "controller\JobsController@update");

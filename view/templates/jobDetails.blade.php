@@ -34,7 +34,7 @@
         <div>{!!$job['requirements']!!}</div>
         @endif
         <hr>
-        <a href="#" class="btn btn-primary btn-sm">Apply Now</a>
+        <a href="/{{$appName}}/job-positions/listing/apply?id={{$job['id']}}" class="btn btn-primary btn-sm">Apply Now</a>
         @if($role == 'Administrator')
         <a href="#" class="btn btn-success btn-sm">Update Job</a>
         <a href="#" class="btn btn-danger btn-sm">Delete Job</a>

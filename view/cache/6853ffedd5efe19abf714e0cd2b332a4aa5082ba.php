@@ -34,7 +34,7 @@
         <div><?php echo $job['requirements']; ?></div>
         <?php endif; ?>
         <hr>
-        <a href="#" class="btn btn-primary btn-sm">Apply Now</a>
+        <a href="/<?php echo e($appName); ?>/job-positions/listing/apply?id=<?php echo e($job['id']); ?>" class="btn btn-primary btn-sm">Apply Now</a>
         <?php if($role == 'Administrator'): ?>
         <a href="#" class="btn btn-success btn-sm">Update Job</a>
         <a href="#" class="btn btn-danger btn-sm">Delete Job</a>

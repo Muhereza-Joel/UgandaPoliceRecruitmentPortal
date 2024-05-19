@@ -8,6 +8,7 @@ use model\JobPosition;
 use model\Model;
 use model\Question;
 use model\Test;
+use model\User;
 use view\BladeView;
 
 class PageController
@@ -17,6 +18,7 @@ class PageController
     private $app_base_url;
     private $blade_view;
     private $model;
+    private $user_model;
     private $jobsModel;
     private $testModel;
     private $questionsModel;
@@ -26,6 +28,7 @@ class PageController
         $this->app_name = getenv("APP_NAME");
         $this->app_name_full = getenv("APP_NAME_FULL");
         $this->app_base_url = getenv("APP_BASE_URL");
+        $this->user_model = new User();
         $this->blade_view = new BladeView();
         $this->model = new Model();
         $this->jobsModel = new JobPosition();
@@ -106,6 +109,27 @@ class PageController
         echo ($html);
     }
 
+    public function render_job_apply($id = null){
+
+        $job = $this->jobsModel->findOne($id);
+        $userDetails = $this->user_model->get_all_user_data(Session::get('user_id'));
+
+        $html = $this->blade_view->render('apply', [
+            'pageTitle' => " $this->app_name apply now",
+            'appName' => $this->app_name,
+            'baseUrl' => $this->app_base_url,
+            'appNameFull' => $this->app_name_full,
+            'username' => Session::get('username'),
+            'role' => Session::get('role'),
+            'avator' => Session::get('avator'),
+            'job' => $job['response'],
+            'userDetails' => $userDetails
+
+        ]);
+
+        echo ($html);
+    }
+
     public function render_job_positions(){
         $html = $this->blade_view->render('jobPositions', [
             'pageTitle' => " $this->app_name job positions",
@@ -122,6 +146,9 @@ class PageController
     }
     
     public function applications(){
+
+        $result = $this->model->get_all_applications();
+
         $html = $this->blade_view->render('applications', [
             'pageTitle' => " $this->app_name applications",
             'appName' => $this->app_name,
@@ -130,6 +157,7 @@ class PageController
             'username' => Session::get('username'),
             'role' => Session::get('role'),
             'avator' => Session::get('avator'),
+            'applications' => $result['response'],
 
         ]);
 
@@ -137,6 +165,8 @@ class PageController
     }
 
     public function render_shortlist(){
+        $result = $this->model->get_shortlist();
+
         $html = $this->blade_view->render('shortlist', [
             'pageTitle' => " $this->app_name shortlist",
             'appName' => $this->app_name,
@@ -145,6 +175,7 @@ class PageController
             'username' => Session::get('username'),
             'role' => Session::get('role'),
             'avator' => Session::get('avator'),
+            'shortlist' => $result['response'],
 
         ]);
 
