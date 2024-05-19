@@ -7,11 +7,11 @@
 <main id="main" class="main">
 
   <div class="pagetitle">
-    <h1 class="text-light">Job Applications</h1>
+    <h1 class="text-light">{{$role == 'Administrator' ? 'Job' : 'Your Job'}} Applications</h1>
     <nav>
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/{{$appName}}/dashboard/">Home</a></li>
-        <li class="breadcrumb-item active text-light">Job Applications</li>
+        <li class="breadcrumb-item active text-light">{{$role == 'Administrator' ? 'Job' : 'Your'}} Applications</li>
       </ol>
     </nav>
   </div><!-- End Page Title -->
@@ -21,10 +21,10 @@
     <div class="row">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">Showing all applications</h5>
+          <h5 class="card-title">Showing {{$role == 'Administrator' ? 'all' : 'your'}} applications</h5>
 
           <!-- Table with stripped rows -->
-          <table class="table table-striped">
+          <table class="table table-striped datatable">
             <thead>
               <tr>
                 <th scope="col">SNo</th>
@@ -32,7 +32,9 @@
                 <th scope="col">Phone Number</th>
                 <th scope="col">Job Title</th>
                 <th scope="col">Status</th>
+                @if($role == 'Administrator')
                 <th scope="col">Action</th>
+                @endif
 
               </tr>
             </thead>
@@ -50,21 +52,23 @@
                     <span class="badge bg-success">Accepted</span>
                   @endif
                 </td>
-                <td>
-                  <div class="dropdown">
-                    <button class="btn btn-outline btn-sm dropdown-toggle" type="button" id="actionDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      Select Action
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="actionDropdown">
+                @if($role == 'Administrator')
+                  <td>
+                    <div class="dropdown">
+                      <button class="btn btn-outline btn-sm dropdown-toggle" type="button" id="actionDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Select Action
+                      </button>
+                      <div class="dropdown-menu" aria-labelledby="actionDropdown">
 
-                      @if($role == 'Administrator')
+                        @if($role == 'Administrator')
 
 
 
-                      @endif
+                        @endif
+                      </div>
                     </div>
-                  </div>
-                </td>
+                  </td>
+                @endif
               </tr>
               @endforeach
 

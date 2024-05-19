@@ -141,6 +141,27 @@ class Model
         return ['httpStatus' => 200, 'response' => $rows];
     }
 
+    public function get_user_applications()
+    {
+        $query = "SELECT a.application_id, a.status, up.name, up.phone, jp.title, a.created_at FROM application a 
+        JOIN user_profile up ON a.applicant_id = up.user_id
+        JOIN job_positions jp ON jp.id = a.position_id
+        WHERE a.applicant_id = ?";
+
+        $current_user = Session::get('user_id');
+
+        $stmt = $this->database->prepare($query);
+        $stmt->bind_param('i', $current_user);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $rows = $result->fetch_all(MYSQLI_ASSOC);
+
+        $stmt->close();
+
+        return ['httpStatus' => 200, 'response' => $rows];
+    }
+
     public function get_shortlist()
     {
         $query = "SELECT a.application_id, s.id As shortlist_id, up.name, up.phone, jp.title, s.status, s.notes, s.created_at FROM shortlist s 
@@ -149,6 +170,28 @@ class Model
         JOIN job_positions jp ON jp.id = a.position_id";
 
         $stmt = $this->database->prepare($query);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $rows = $result->fetch_all(MYSQLI_ASSOC);
+
+        $stmt->close();
+
+        return ['httpStatus' => 200, 'response' => $rows];
+    }
+
+    public function get_user_shortlist()
+    {
+        $query = "SELECT a.application_id, s.id As shortlist_id, up.name, up.phone, jp.title, s.status, s.notes, s.created_at FROM shortlist s 
+        JOIN application a ON s.application_id = a.applicant_id
+        JOIN user_profile up ON up.user_id = a.applicant_id
+        JOIN job_positions jp ON jp.id = a.position_id
+        WHERE a.applicant_id = ?";
+
+        $current_user = Session::get('user_id');
+
+        $stmt = $this->database->prepare($query);
+        $stmt->bind_param('i', $current_user);
         $stmt->execute();
 
         $result = $stmt->get_result();

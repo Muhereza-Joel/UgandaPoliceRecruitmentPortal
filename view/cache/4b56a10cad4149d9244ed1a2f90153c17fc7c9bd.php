@@ -7,7 +7,7 @@
 <main id="main" class="main">
 
   <div class="pagetitle">
-    <h1 class="text-light">Shortlisted Candidates</h1>
+    <h1 class="text-light"><?php echo e($role == 'Administrator' ? 'All Shortisted Candidates' : 'My Shortlist'); ?></h1>
     <nav>
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/<?php echo e($appName); ?>/dashboard/">Home</a></li>
@@ -21,10 +21,10 @@
     <div class="row">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">All Shorlisted Candidates</h5>
+          <h5 class="card-title"><?php echo e($role == 'Administrator' ? 'All Shortisted Candidates' : 'Your Shortlist'); ?></h5>
 
           <!-- Table with stripped rows -->
-          <table class="table table-striped">
+          <table class="table table-striped datatable">
             <thead>
               <tr>
                 <th scope="col">SNo</th>
@@ -33,7 +33,10 @@
                 <th scope="col">Job Title</th>
                 <th scope="col">Status</th>
                 <th scope="col">Notes</th>
-                <th scope="col">Action</th>
+
+                <?php if($role == 'Administrator'): ?>
+                 <th scope="col">Action</th>
+                <?php endif; ?>
 
               </tr>
             </thead>
@@ -51,6 +54,7 @@
                   <?php endif; ?>
                 </td>
                 <td><?php echo e($item['notes']); ?></td>
+                <?php if($role == 'Administrator'): ?>
                 <td>
                   <div class="dropdown">
                     <button class="btn btn-outline btn-sm dropdown-toggle" type="button" id="actionDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -66,6 +70,7 @@
                     </div>
                   </div>
                 </td>
+                <?php endif; ?>
               </tr>
               <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 

@@ -26,6 +26,14 @@
                         <span class="text-center"></span>
                       </div>
                       <form id="registration-form" class="row g-3 needs-validation" novalidate>
+                        <div class="col-12">
+                          <label for="yourUsername" class="form-label">Username</label>
+                          <div class="input-group has-validation">
+                           
+                            <input type="text" name="username" class="form-control" id="yourUsername" required placeholder="Enter a login username to use">
+                            <div class="invalid-feedback">Please choose a username.</div>
+                          </div>
+                        </div>
 
                         <div class="col-12">
                           <label for="yourEmail" class="form-label">Your Email</label>
@@ -33,14 +41,6 @@
                           <div class="invalid-feedback">Please enter a valid Email adddress!</div>
                         </div>
 
-                        <div class="col-12">
-                          <label for="yourUsername" class="form-label">Username</label>
-                          <div class="input-group has-validation">
-                            <span class="input-group-text" id="inputGroupPrepend">@</span>
-                            <input type="text" name="username" class="form-control" id="yourUsername" required placeholder="Enter a login username to use">
-                            <div class="invalid-feedback">Please choose a username.</div>
-                          </div>
-                        </div>
 
                         <div class="col-12">
                           <label for="yourPassword" class="form-label">Password</label>

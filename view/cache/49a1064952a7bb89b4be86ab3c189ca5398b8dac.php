@@ -62,14 +62,14 @@
   <?php endif; ?>
 
   <?php if($role == 'User'): ?>
-  <li class="nav-item">
+  <li class="nav-item pb-2">
     <a class="nav-link " href="/<?php echo e($appName); ?>/dashboard/">
       <i class="bi bi-grid"></i>
       <span>Dashboard</span>
     </a>
   </li>
 
-  <li class="nav-item">
+  <li class="nav-item pb-2">
     <a class="nav-link collapsed" href="/<?php echo e($appName); ?>/job-positions/listing/">
       <i class="bi bi-card-list"></i>
       <span>Jobs</span>
@@ -77,13 +77,20 @@
   </li>
 
 
-  <li class="nav-item">
-    <a class="nav-link collapsed" href="/<?php echo e($appName); ?>/shortlist/">
+  <li class="nav-item pb-2">
+    <a class="nav-link collapsed" href="/<?php echo e($appName); ?>/my-applications/">
+      <i class="bi bi-card-list"></i>
+      <span>My Applications</span>
+    </a>
+  </li>
+
+  <li class="nav-item pb-2">
+    <a class="nav-link collapsed" href="/<?php echo e($appName); ?>/u/shortlist/">
       <i class="bi bi-card-list"></i>
       <span>Shortlist</span>
     </a>
   </li>
-  <li class="nav-item">
+  <li class="nav-item pb-2">
     <a class="nav-link collapsed" href="/<?php echo e($appName); ?>/exam/">
       <i class="bi bi-card-list"></i>
       <span>Apptitute Test</span>

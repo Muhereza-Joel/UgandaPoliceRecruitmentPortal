@@ -260,7 +260,7 @@
               $("#save-profile-button").text('Profile created, redirecting...');
 
               setTimeout(function() {
-                window.location.replace("http://localhost/{{$appName}}/auth/login/")
+                window.location.replace("http://localhost/{{$appName}}/dashboard/")
               }, 3000)
             },
             error: function(jqXHR, textStatus, errorThrown) {
