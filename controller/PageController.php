@@ -169,6 +169,28 @@ class PageController
         echo ($html);
     }
 
+    public function render_create_shortlist($application_id, $applicant_id, $position_id)
+    {
+        $userDetails = $this->model->get_user_details($applicant_id);
+        $jobDetails = $this->jobsModel->findOne($position_id);
+
+        $html = $this->blade_view->render('createShortlist', [
+            'pageTitle' => " $this->app_name applications",
+            'appName' => $this->app_name,
+            'baseUrl' => $this->app_base_url,
+            'appNameFull' => $this->app_name_full,
+            'username' => Session::get('username'),
+            'role' => Session::get('role'),
+            'avator' => Session::get('avator'),
+            'applicationId' => $application_id,
+            'userDetails' => $userDetails['response'],
+            'jobDetails' => $jobDetails['response'],
+
+        ]);
+
+        echo ($html);
+    }
+
     public function render_my_applications()
     {
 

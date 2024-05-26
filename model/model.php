@@ -126,7 +126,7 @@ class Model
 
     public function get_all_applications()
     {
-        $query = "SELECT a.application_id, a.status, up.name, up.phone, jp.title, a.created_at FROM application a 
+        $query = "SELECT a.application_id, a.applicant_id, a.position_id, a.status, up.name, up.phone, jp.title, a.created_at FROM application a 
         JOIN user_profile up ON a.applicant_id = up.user_id
         JOIN job_positions jp ON jp.id = a.position_id";
 
@@ -165,7 +165,7 @@ class Model
     public function get_shortlist()
     {
         $query = "SELECT a.application_id, s.id As shortlist_id, up.name, up.phone, jp.title, s.status, s.notes, s.created_at FROM shortlist s 
-        JOIN application a ON s.application_id = a.applicant_id
+        JOIN application a ON s.application_id = a.application_id
         JOIN user_profile up ON up.user_id = a.applicant_id
         JOIN job_positions jp ON jp.id = a.position_id";
 
@@ -183,7 +183,7 @@ class Model
     public function get_user_shortlist()
     {
         $query = "SELECT a.application_id, s.id As shortlist_id, up.name, up.phone, jp.title, s.status, s.notes, s.created_at FROM shortlist s 
-        JOIN application a ON s.application_id = a.applicant_id
+        JOIN application a ON s.application_id = a.application_id
         JOIN user_profile up ON up.user_id = a.applicant_id
         JOIN job_positions jp ON jp.id = a.position_id
         WHERE a.applicant_id = ?";

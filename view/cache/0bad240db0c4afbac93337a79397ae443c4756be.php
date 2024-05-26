@@ -75,7 +75,7 @@
                       <a href="/<?php echo e($appName); ?>/jobs/applications/update-status/?application_id=<?php echo e($application['application_id']); ?>&status=accepted" class="dropdown-item" id="accept-application-btn">Accept Application</a>
                       <?php endif; ?>
                       <?php if($application['status'] == 'accepted'): ?>
-                      <a href="/<?php echo e($appName); ?>/jobs/applications/update-status/?application_id=<?php echo e($application['application_id']); ?>" class="dropdown-item text-success" id="shortlist-applicant-btn">Shortlist Applicant</a>
+                      <a href="/<?php echo e($appName); ?>/applications/create-shortlist?application_id=<?php echo e($application['application_id']); ?>&applicant_id=<?php echo e($application['applicant_id']); ?>&position_id=<?php echo e($application['position_id']); ?>" class="dropdown-item text-success" id="shortlist-applicant-btn">Shortlist Applicant</a>
                       <?php endif; ?>
                       
                       <?php if($application['status'] != 'rejected'): ?>
