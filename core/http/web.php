@@ -37,6 +37,7 @@ Route::post("/$app_name/applications/", "controller\PageController@render_applic
 Route::post("/$app_name/applications/create-shortlist", "controller\PageController@render_create_shortlist");
 Route::post("/$app_name/my-applications/", "controller\PageController@render_my_applications");
 Route::post("/$app_name/shortlist/", "controller\PageController@render_shortlist");
+Route::post("/$app_name/shortlist/mail", "controller\PageController@render_mail");
 Route::post("/$app_name/u/shortlist/", "controller\PageController@render_user_shortlist");
 Route::post("/$app_name/exam/", "controller\PageController@render_start_exam");
 Route::post("/$app_name/apply/", "controller\PageController@render_apply");
@@ -85,5 +86,8 @@ Route::post("/$app_name/options/delete/", "controller\OptionsController@delete")
 
 //Routes for options Controller
 Route::post("/$app_name/responses/create/", "controller\ResponseController@create");
+
+//Routes for mail controller
+Route::post("/$app_name/mail/create/", "controller\MailController@send_mail");
 
 ?>

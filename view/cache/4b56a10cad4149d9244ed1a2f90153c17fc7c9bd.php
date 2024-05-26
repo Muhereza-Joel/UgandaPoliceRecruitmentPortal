@@ -24,7 +24,7 @@
           <h5 class="card-title"><?php echo e($role == 'Administrator' ? 'All Shortisted Candidates' : 'Your Shortlist'); ?></h5>
 
           <!-- Table with stripped rows -->
-          <table class="table table-striped datatable">
+          <table class="table table-striped datatable" id="shortlist-table">
             <thead>
               <tr>
                 <th scope="col">SNo</th>
@@ -64,7 +64,7 @@
 
                       <?php if($role == 'Administrator'): ?>
 
-
+                        <a href="/<?php echo e($appName); ?>/shortlist/mail?shortlist_id=<?php echo e($item['shortlist_id']); ?>&applicant_id=<?php echo e($item['user_id']); ?>" class="dropdown-item">Send Email</a>
 
                       <?php endif; ?>
                     </div>

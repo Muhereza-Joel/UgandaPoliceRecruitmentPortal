@@ -24,7 +24,7 @@
           <h5 class="card-title">{{$role == 'Administrator' ? 'All Shortisted Candidates' : 'Your Shortlist'}}</h5>
 
           <!-- Table with stripped rows -->
-          <table class="table table-striped datatable">
+          <table class="table table-striped datatable" id="shortlist-table">
             <thead>
               <tr>
                 <th scope="col">SNo</th>
@@ -64,7 +64,7 @@
 
                       @if($role == 'Administrator')
 
-
+                        <a href="/{{$appName}}/shortlist/mail?shortlist_id={{$item['shortlist_id']}}&applicant_id={{$item['user_id']}}" class="dropdown-item">Send Email</a>
 
                       @endif
                     </div>

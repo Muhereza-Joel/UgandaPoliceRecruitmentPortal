@@ -7,6 +7,7 @@ use core\Session;
 use model\JobPosition;
 use model\Model;
 use model\Question;
+use model\ShortList;
 use model\Test;
 use model\User;
 use view\BladeView;
@@ -22,6 +23,7 @@ class PageController
     private $jobsModel;
     private $testModel;
     private $questionsModel;
+    private $shortlistModel;
 
     public function __construct()
     {
@@ -34,6 +36,7 @@ class PageController
         $this->jobsModel = new JobPosition();
         $this->testModel = new Test();
         $this->questionsModel = new Question();
+        $this->shortlistModel = new ShortList();
     }
 
     public function render_404()
@@ -334,6 +337,27 @@ class PageController
             'username' => Session::get('username'),
             'role' => Session::get('role'),
             'avator' => Session::get('avator'),
+
+        ]);
+
+        echo ($html);
+    }
+
+    public function render_mail($shortlist_id, $applicant_id)
+    {
+        $shortListDetails = $this->shortlistModel->findOne($shortlist_id);
+        $userDetails = $this->model->get_user_details($applicant_id);
+
+        $html = $this->blade_view->render('mail', [
+            'pageTitle' => " $this->app_name exam",
+            'appName' => $this->app_name,
+            'baseUrl' => $this->app_base_url,
+            'appNameFull' => $this->app_name_full,
+            'username' => Session::get('username'),
+            'role' => Session::get('role'),
+            'avator' => Session::get('avator'),
+            'shortlist' => $shortListDetails['response'],
+            'userDetails' => $userDetails['response'],
 
         ]);
 

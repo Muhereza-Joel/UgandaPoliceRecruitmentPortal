@@ -17,6 +17,7 @@
     "require": {
         "jenssegers/blade": "^1.1",
         "vlucas/phpdotenv": "^4.3",
-        "tecnickcom/tcpdf": "^6.7"
+        "tecnickcom/tcpdf": "^6.7",
+        "phpmailer/phpmailer": "^6.9"
     }
 }

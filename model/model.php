@@ -164,7 +164,7 @@ class Model
 
     public function get_shortlist()
     {
-        $query = "SELECT a.application_id, s.id As shortlist_id, up.name, up.phone, jp.title, s.status, s.notes, s.created_at FROM shortlist s 
+        $query = "SELECT a.application_id, s.id As shortlist_id, up.user_id, up.name, up.phone, jp.title, s.status, s.notes, s.created_at FROM shortlist s 
         JOIN application a ON s.application_id = a.application_id
         JOIN user_profile up ON up.user_id = a.applicant_id
         JOIN job_positions jp ON jp.id = a.position_id";
