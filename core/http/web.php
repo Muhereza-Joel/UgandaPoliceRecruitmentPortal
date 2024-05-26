@@ -47,10 +47,12 @@ Route::post("/$app_name/users/", "controller\PageController@render_users");
 //Routes for jobs controller
 Route::post("/$app_name/jobs/create/", "controller\JobsController@create");
 Route::post("/$app_name/jobs/applications/create/", "controller\JobsController@applications_create");
+Route::post("/$app_name/jobs/applications/update-status/", "controller\JobsController@update_application_status");
 Route::post("/$app_name/jobs/", "controller\JobsController@read_all");
 Route::post("/$app_name/jobs/read-one/", "controller\JobsController@read_one");
 Route::post("/$app_name/jobs/update/", "controller\JobsController@update");
 Route::post("/$app_name/jobs/delete/", "controller\JobsController@delete");
+
 
 //Routes for shortlist Controller
 Route::post("/$app_name/shortlist/create/", "controller\ShortlistController@create");

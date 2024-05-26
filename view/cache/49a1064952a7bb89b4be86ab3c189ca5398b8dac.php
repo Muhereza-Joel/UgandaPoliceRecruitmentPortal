@@ -87,7 +87,7 @@
   <li class="nav-item pb-2">
     <a class="nav-link collapsed" href="/<?php echo e($appName); ?>/u/shortlist/">
       <i class="bi bi-card-list"></i>
-      <span>Shortlist</span>
+      <span>My Shortlist</span>
     </a>
   </li>
   <li class="nav-item pb-2">

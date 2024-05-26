@@ -67,4 +67,10 @@ class JobsController
         $result = $this->jobObject->delete($this->request->input('id'));
         Request::send_response($result['httpStatus'], $result['response']);
     }
+
+    public function update_application_status($application_id, $status)
+    {
+        $result = $this->model->change_application_status($application_id, $status);
+        Request::send_response($result['httpStatus'], $result['response']);
+    }
 }

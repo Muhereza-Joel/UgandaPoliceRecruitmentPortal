@@ -201,4 +201,32 @@ class Model
 
         return ['httpStatus' => 200, 'response' => $rows];
     }
+
+    public function change_application_status($application_id, $status)
+    {
+        $query = "UPDATE application SET status = ? WHERE application_id = ?";
+
+        $stmt = $this->database->prepare($query);
+        $stmt->bind_param('si', $status, $application_id);
+        $stmt->execute();
+
+        
+        if ($stmt->affected_rows > 0) {
+            $response = ['message' => 'Application status updated successfully'];
+            $httpStatus = 200;
+            return ['httpStatus' => $httpStatus, 'response' => $response];
+
+        } elseif ($stmt->affected_rows == 0) {
+            $response = ['message' => 'Nothing To Update'];
+            $httpStatus = 200;
+            return ['httpStatus' => $httpStatus, 'response' => $response];
+
+        } else {
+            $response = ['message' => $this->database->error];
+            $httpStatus = 500;
+            return ['httpStatus' => $httpStatus, 'response' => $response];
+        }
+
+        $stmt->close();
+    }
 }
