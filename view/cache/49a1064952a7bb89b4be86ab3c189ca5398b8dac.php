@@ -93,7 +93,7 @@
   <li class="nav-item pb-2">
     <a class="nav-link collapsed" href="/<?php echo e($appName); ?>/exam/">
       <i class="bi bi-card-list"></i>
-      <span>Apptitute Test</span>
+      <span>My Apptitute Test</span>
     </a>
   </li>
 

@@ -4,6 +4,13 @@
 
 @include('partials/leftPane');
 
+<style>
+  .table-responsive {
+    width: 100%;
+    overflow-x: auto;
+  }
+</style>
+
 <main id="main" class="main">
 
   <div class="pagetitle">
@@ -24,75 +31,69 @@
           <h5 class="card-title">Showing {{$role == 'Administrator' ? 'all' : 'your'}} applications</h5>
 
           <!-- Table with stripped rows -->
-          <table class="table table-striped datatable" id="applications-table">
-            <thead>
-              <tr>
-                <th scope="col">SNo</th>
-                <th scope="col">Name</th>
-                <th scope="col">Phone Number</th>
-                <th scope="col">Job Title</th>
-                <th scope="col">Status</th>
-                @if($role == 'Administrator')
-                <th scope="col">Action</th>
-                @endif
-
-              </tr>
-            </thead>
-            <tbody>
-              @foreach($applications as $application)
-              <tr>
-                <th scope="row">{{$loop->iteration}}</th>
-                <td>{{$application['name']}}</td>
-                <td>{{$application['phone']}}</td>
-                <td>{{$application['title']}}</td>
-                <td>
-                  @if($application['status'] == 'pending')
-                  <span class="badge bg-warning">Pending</span>
-
-                  @elseif($application['status'] == 'accepted')
-                  <span class="badge bg-success">Accepted</span>
-
-                  @elseif($application['status'] == 'reviewing')
-                  <span class="badge bg-info">Reviewing</span>
-                  @elseif($application['status'] == 'rejected')
-                  <span class="badge bg-danger">Rejected</span>
+          <div class="table-responsive">
+            <table class="table table-striped datatable table-responsive" id="applications-table">
+              <thead>
+                <tr>
+                  <th scope="col">SNo</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Phone Number</th>
+                  <th scope="col">Job Title</th>
+                  <th scope="col">Status</th>
+                  @if($role == 'Administrator')
+                  <th scope="col">Action</th>
                   @endif
-                </td>
-                @if($role == 'Administrator')
-                <td>
-                  <div class="dropdown">
-                    <button class="btn btn-outline btn-sm dropdown-toggle" type="button" id="actionDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      Select Action
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="actionDropdown">
-
-                      @if($role == 'Administrator')
-
-                      @if($application['status'] == 'pending')
-                      <a href="/{{$appName}}/jobs/applications/update-status/?application_id={{$application['application_id']}}&status=reviewing" class="dropdown-item" id="review-application-btn">Review Application</a>
-                      @endif
-                      @if($application['status'] == 'reviewing')
-                      <a href="/{{$appName}}/jobs/applications/update-status/?application_id={{$application['application_id']}}&status=accepted" class="dropdown-item" id="accept-application-btn">Accept Application</a>
-                      @endif
-                      @if($application['status'] == 'accepted')
-                      <a href="/{{$appName}}/applications/create-shortlist?application_id={{$application['application_id']}}&applicant_id={{$application['applicant_id']}}&position_id={{$application['position_id']}}" class="dropdown-item text-success" id="shortlist-applicant-btn">Shortlist Applicant</a>
-                      @endif
-                      
-                      @if($application['status'] != 'rejected')
-                      <a href="/{{$appName}}/jobs/applications/update-status/?application_id={{$application['application_id']}}&status=rejected" class="dropdown-item text-danger" id="reject-application-btn">Reject Application</a>
-                      @endif
-                      
-                      @endif
+                </tr>
+              </thead>
+              <tbody>
+                @foreach($applications as $application)
+                <tr>
+                  <th scope="row">{{$loop->iteration}}</th>
+                  <td>{{$application['name']}}</td>
+                  <td>{{$application['phone']}}</td>
+                  <td>{{$application['title']}}</td>
+                  <td>
+                    @if($application['status'] == 'pending')
+                    <span class="badge bg-warning">Pending</span>
+                    @elseif($application['status'] == 'accepted')
+                    <span class="badge bg-success">Accepted</span>
+                    @elseif($application['status'] == 'reviewing')
+                    <span class="badge bg-info">Reviewing</span>
+                    @elseif($application['status'] == 'rejected')
+                    <span class="badge bg-danger">Rejected</span>
+                    @endif
+                  </td>
+                  @if($role == 'Administrator')
+                  <td>
+                    <div class="dropdown">
+                      <button class="btn btn-outline btn-sm dropdown-toggle" type="button" id="actionDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Select Action
+                      </button>
+                      <div class="dropdown-menu" aria-labelledby="actionDropdown">
+                        @if($role == 'Administrator')
+                        @if($application['status'] == 'pending')
+                        <a href="/{{$appName}}/jobs/applications/update-status/?application_id={{$application['application_id']}}&status=reviewing" class="dropdown-item" id="review-application-btn">Review Application</a>
+                        @endif
+                        @if($application['status'] == 'reviewing')
+                        <a href="/{{$appName}}/jobs/applications/update-status/?application_id={{$application['application_id']}}&status=accepted" class="dropdown-item" id="accept-application-btn">Accept Application</a>
+                        @endif
+                        @if($application['status'] == 'accepted')
+                        <a href="/{{$appName}}/applications/create-shortlist?application_id={{$application['application_id']}}&applicant_id={{$application['applicant_id']}}&position_id={{$application['position_id']}}" class="dropdown-item text-success" id="shortlist-applicant-btn">Shortlist Applicant</a>
+                        @endif
+                        @if($application['status'] != 'rejected')
+                        <a href="/{{$appName}}/jobs/applications/update-status/?application_id={{$application['application_id']}}&status=rejected" class="dropdown-item text-danger" id="reject-application-btn">Reject Application</a>
+                        @endif
+                        @endif
+                      </div>
                     </div>
-                  </div>
-                </td>
-                @endif
-              </tr>
-              @endforeach
+                  </td>
+                  @endif
+                </tr>
+                @endforeach
+              </tbody>
+            </table>
+          </div>
 
-
-            </tbody>
-          </table>
           <!-- End Table with stripped rows -->
 
         </div>

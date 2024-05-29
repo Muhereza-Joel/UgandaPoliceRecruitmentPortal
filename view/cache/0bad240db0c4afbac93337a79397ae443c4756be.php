@@ -4,6 +4,13 @@
 
 <?php echo $__env->make('partials/leftPane', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>;
 
+<style>
+  .table-responsive {
+    width: 100%;
+    overflow-x: auto;
+  }
+</style>
+
 <main id="main" class="main">
 
   <div class="pagetitle">
@@ -24,75 +31,69 @@
           <h5 class="card-title">Showing <?php echo e($role == 'Administrator' ? 'all' : 'your'); ?> applications</h5>
 
           <!-- Table with stripped rows -->
-          <table class="table table-striped datatable" id="applications-table">
-            <thead>
-              <tr>
-                <th scope="col">SNo</th>
-                <th scope="col">Name</th>
-                <th scope="col">Phone Number</th>
-                <th scope="col">Job Title</th>
-                <th scope="col">Status</th>
-                <?php if($role == 'Administrator'): ?>
-                <th scope="col">Action</th>
-                <?php endif; ?>
-
-              </tr>
-            </thead>
-            <tbody>
-              <?php $__currentLoopData = $applications; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $application): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-              <tr>
-                <th scope="row"><?php echo e($loop->iteration); ?></th>
-                <td><?php echo e($application['name']); ?></td>
-                <td><?php echo e($application['phone']); ?></td>
-                <td><?php echo e($application['title']); ?></td>
-                <td>
-                  <?php if($application['status'] == 'pending'): ?>
-                  <span class="badge bg-warning">Pending</span>
-
-                  <?php elseif($application['status'] == 'accepted'): ?>
-                  <span class="badge bg-success">Accepted</span>
-
-                  <?php elseif($application['status'] == 'reviewing'): ?>
-                  <span class="badge bg-info">Reviewing</span>
-                  <?php elseif($application['status'] == 'rejected'): ?>
-                  <span class="badge bg-danger">Rejected</span>
+          <div class="table-responsive">
+            <table class="table table-striped datatable table-responsive" id="applications-table">
+              <thead>
+                <tr>
+                  <th scope="col">SNo</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Phone Number</th>
+                  <th scope="col">Job Title</th>
+                  <th scope="col">Status</th>
+                  <?php if($role == 'Administrator'): ?>
+                  <th scope="col">Action</th>
                   <?php endif; ?>
-                </td>
-                <?php if($role == 'Administrator'): ?>
-                <td>
-                  <div class="dropdown">
-                    <button class="btn btn-outline btn-sm dropdown-toggle" type="button" id="actionDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      Select Action
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="actionDropdown">
-
-                      <?php if($role == 'Administrator'): ?>
-
-                      <?php if($application['status'] == 'pending'): ?>
-                      <a href="/<?php echo e($appName); ?>/jobs/applications/update-status/?application_id=<?php echo e($application['application_id']); ?>&status=reviewing" class="dropdown-item" id="review-application-btn">Review Application</a>
-                      <?php endif; ?>
-                      <?php if($application['status'] == 'reviewing'): ?>
-                      <a href="/<?php echo e($appName); ?>/jobs/applications/update-status/?application_id=<?php echo e($application['application_id']); ?>&status=accepted" class="dropdown-item" id="accept-application-btn">Accept Application</a>
-                      <?php endif; ?>
-                      <?php if($application['status'] == 'accepted'): ?>
-                      <a href="/<?php echo e($appName); ?>/applications/create-shortlist?application_id=<?php echo e($application['application_id']); ?>&applicant_id=<?php echo e($application['applicant_id']); ?>&position_id=<?php echo e($application['position_id']); ?>" class="dropdown-item text-success" id="shortlist-applicant-btn">Shortlist Applicant</a>
-                      <?php endif; ?>
-                      
-                      <?php if($application['status'] != 'rejected'): ?>
-                      <a href="/<?php echo e($appName); ?>/jobs/applications/update-status/?application_id=<?php echo e($application['application_id']); ?>&status=rejected" class="dropdown-item text-danger" id="reject-application-btn">Reject Application</a>
-                      <?php endif; ?>
-                      
-                      <?php endif; ?>
+                </tr>
+              </thead>
+              <tbody>
+                <?php $__currentLoopData = $applications; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $application): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <tr>
+                  <th scope="row"><?php echo e($loop->iteration); ?></th>
+                  <td><?php echo e($application['name']); ?></td>
+                  <td><?php echo e($application['phone']); ?></td>
+                  <td><?php echo e($application['title']); ?></td>
+                  <td>
+                    <?php if($application['status'] == 'pending'): ?>
+                    <span class="badge bg-warning">Pending</span>
+                    <?php elseif($application['status'] == 'accepted'): ?>
+                    <span class="badge bg-success">Accepted</span>
+                    <?php elseif($application['status'] == 'reviewing'): ?>
+                    <span class="badge bg-info">Reviewing</span>
+                    <?php elseif($application['status'] == 'rejected'): ?>
+                    <span class="badge bg-danger">Rejected</span>
+                    <?php endif; ?>
+                  </td>
+                  <?php if($role == 'Administrator'): ?>
+                  <td>
+                    <div class="dropdown">
+                      <button class="btn btn-outline btn-sm dropdown-toggle" type="button" id="actionDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Select Action
+                      </button>
+                      <div class="dropdown-menu" aria-labelledby="actionDropdown">
+                        <?php if($role == 'Administrator'): ?>
+                        <?php if($application['status'] == 'pending'): ?>
+                        <a href="/<?php echo e($appName); ?>/jobs/applications/update-status/?application_id=<?php echo e($application['application_id']); ?>&status=reviewing" class="dropdown-item" id="review-application-btn">Review Application</a>
+                        <?php endif; ?>
+                        <?php if($application['status'] == 'reviewing'): ?>
+                        <a href="/<?php echo e($appName); ?>/jobs/applications/update-status/?application_id=<?php echo e($application['application_id']); ?>&status=accepted" class="dropdown-item" id="accept-application-btn">Accept Application</a>
+                        <?php endif; ?>
+                        <?php if($application['status'] == 'accepted'): ?>
+                        <a href="/<?php echo e($appName); ?>/applications/create-shortlist?application_id=<?php echo e($application['application_id']); ?>&applicant_id=<?php echo e($application['applicant_id']); ?>&position_id=<?php echo e($application['position_id']); ?>" class="dropdown-item text-success" id="shortlist-applicant-btn">Shortlist Applicant</a>
+                        <?php endif; ?>
+                        <?php if($application['status'] != 'rejected'): ?>
+                        <a href="/<?php echo e($appName); ?>/jobs/applications/update-status/?application_id=<?php echo e($application['application_id']); ?>&status=rejected" class="dropdown-item text-danger" id="reject-application-btn">Reject Application</a>
+                        <?php endif; ?>
+                        <?php endif; ?>
+                      </div>
                     </div>
-                  </div>
-                </td>
-                <?php endif; ?>
-              </tr>
-              <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                  </td>
+                  <?php endif; ?>
+                </tr>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+              </tbody>
+            </table>
+          </div>
 
-
-            </tbody>
-          </table>
           <!-- End Table with stripped rows -->
 
         </div>

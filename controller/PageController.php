@@ -353,6 +353,8 @@ class PageController
 
     public function render_start_exam()
     {
+        $my_test = $this->model->get_my_test();
+
         $html = $this->blade_view->render('apptitude', [
             'pageTitle' => " $this->app_name exam",
             'appName' => $this->app_name,
@@ -361,7 +363,7 @@ class PageController
             'username' => Session::get('username'),
             'role' => Session::get('role'),
             'avator' => Session::get('avator'),
-
+            'myTest' => $my_test['response'],
         ]);
 
         echo ($html);

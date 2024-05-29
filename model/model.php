@@ -312,6 +312,52 @@ class Model
         }
     }
 
+    public function get_my_test()
+    {
+        $query = "SELECT 
+        tm.id AS mapping_id, 
+        tm.status AS mapping_status,
+        jp.title AS job_title, 
+        jp.description AS job_description, 
+        t.test_id,
+        t.title AS test_title, 
+        t.description AS test_description, 
+        t.duration_minutes, 
+        t.total_marks,
+        (SELECT COUNT(*) 
+        FROM questions q 
+        WHERE q.test_id = t.test_id) AS question_count
+        FROM 
+            test_mapping tm
+        JOIN 
+            test t ON t.test_id = tm.test_id
+        JOIN 
+            job_positions jp ON jp.id = tm.job_id
+        JOIN 
+            application a ON a.position_id = tm.job_id
+        WHERE 
+            a.applicant_id = ?
+            AND EXISTS (
+                SELECT 1 
+                FROM shortlist s 
+                JOIN application a
+                WHERE s.application_id = a.application_id
+            )
+        ";
+
+        $user_id = Session::get('user_id');
+        $stmt = $this->database->prepare($query);
+        $stmt->bind_param('i', $user_id);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $rows = $result->fetch_assoc();
+
+        $stmt->close();
+
+        return ['httpStatus' => 200, 'response' => $rows];
+    }
+
 
     public function get_questions_for_test()
     {
