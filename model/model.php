@@ -358,6 +358,85 @@ class Model
         return ['httpStatus' => 200, 'response' => $rows];
     }
 
+    public function get_results()
+    {
+        $query = "SELECT
+        user_response.user_id,
+        user_profile.name AS person_name,
+        test.title AS test_title,
+        COUNT(*) AS correct_questions_count,
+        total_questions.total_questions_count,
+        COUNT(*) * (test.total_marks / total_questions.total_questions_count) AS total_marks
+        FROM
+            user_response
+        JOIN
+            options ON user_response.selected_option_id = options.option_id
+        JOIN
+            (SELECT test_id, COUNT(*) AS total_questions_count FROM questions GROUP BY test_id) AS total_questions ON user_response.test_id = total_questions.test_id
+        JOIN
+            test ON user_response.test_id = test.test_id
+        JOIN
+            user_profile ON user_response.user_id = user_profile.user_id
+        WHERE
+            options.is_correct = 1
+        GROUP BY
+            user_response.user_id, user_profile.name, test.title, test.total_marks, total_questions.total_questions_count
+    ";
+
+        $stmt = $this->database->prepare($query);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $rows = $result->fetch_all(MYSQLI_ASSOC);
+
+        $stmt->close();
+
+        return ['httpStatus' => 200, 'response' => $rows];
+    }
+
+    public function get_my_marks($test_id, $user_id)
+    {
+        $query = "SELECT 
+        (correct_questions_count / total_questions_count) * t.total_marks AS total_marks_for_user
+        FROM (
+            SELECT 
+                COUNT(*) AS correct_questions_count
+            FROM 
+                user_response ur
+            JOIN 
+                options o ON ur.selected_option_id = o.option_id
+            WHERE 
+                o.is_correct = 1
+            AND 
+                ur.user_id = ?
+            AND 
+                ur.test_id = ?
+        ) AS correct_count,
+        (
+            SELECT 
+                COUNT(*) AS total_questions_count
+            FROM 
+                questions q
+            WHERE 
+                q.test_id = ?
+        ) AS total_count,
+        test t
+        WHERE 
+            t.test_id = ?
+    ";
+
+        $stmt = $this->database->prepare($query);
+        $stmt->bind_param('iiii', $user_id, $test_id, $test_id, $test_id);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $rows = $result->fetch_assoc();
+
+        $stmt->close();
+
+        return ['httpStatus' => 200, 'response' => $rows];
+    }
+
 
     public function get_questions_for_test($test_id, $user_id)
     {

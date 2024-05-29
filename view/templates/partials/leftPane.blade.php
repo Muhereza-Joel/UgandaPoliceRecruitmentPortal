@@ -47,17 +47,17 @@
 
   <li class="nav-item pb-2">
     <a class="nav-link collapsed" href="/{{$appName}}/manage-exams/">
-      <i class="bi bi-cart"></i>
+      <i class="bi bi-grid"></i>
       <span>Manage Exams</span>
     </a>
   </li>
 
-  <!-- <li class="nav-item pb-2">
-    <a class="nav-link collapsed" href="/{{$appName}}/users/">
-      <i class="bi bi-cart"></i>
-      <span>Users</span>
+  <li class="nav-item pb-2">
+    <a class="nav-link collapsed" href="/{{$appName}}/exams/results/">
+      <i class="bi bi-grid"></i>
+      <span>View Results</span>
     </a>
-  </li> -->
+  </li>
 
   @endif
 

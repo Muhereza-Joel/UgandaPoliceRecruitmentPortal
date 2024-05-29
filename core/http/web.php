@@ -46,6 +46,7 @@ Route::post("/$app_name/manage-exams/", "controller\PageController@render_manage
 Route::post("/$app_name/manage-exams/test/add-questions", "controller\PageController@render_add_questions");
 Route::post("/$app_name/users/", "controller\PageController@render_users");
 Route::post("/$app_name/exam/attempt", "controller\PageController@render_attempt_exam");
+Route::post("/$app_name/exams/results/", "controller\PageController@render_results_view");
 
 
 //Routes for jobs controller
@@ -74,6 +75,7 @@ Route::post("/$app_name/test/read-one/", "controller\TestController@read_one");
 Route::post("/$app_name/test/update/", "controller\TestController@update");
 Route::post("/$app_name/test/delete/", "controller\TestController@delete");
 Route::post("/$app_name/test/questions/", "controller\TestController@get_questions");
+Route::post("/$app_name/test/my-marks/", "controller\TestController@get_my_marks");
 
 //Routes for questions Controller
 Route::post("/$app_name/questions/create/", "controller\QuestionsController@create");

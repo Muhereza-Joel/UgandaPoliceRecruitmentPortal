@@ -18,12 +18,12 @@
 
   <section class="section dashboard">
 
-  <div class="row g-2">
-    @if(empty($myTest))
+    <div class="row g-2">
+      @if(empty($myTest))
       <div class="col-12">
-        <div class="alert alert-warning"><strong>No test details available you at the moment.</strong></div>
+        <div class="alert alert-warning"><strong>No test details available at the moment.</strong></div>
       </div>
-    @else
+      @else
       <div class="col-sm-6">
         <div class="card p-2">
           <div class="card-title">Details of Job You Applied For</div>
@@ -55,19 +55,50 @@
             <small class="fw-bold">Total Marks</small>
             <p>{{$myTest['total_marks']}}</p><br>
 
+            <h3 id="mark-label" class="alert alert-success d-none">You completed this test. Your score is: <span id="userScore"></span>%</h3>
+
             @if($myTest['mapping_status'] == 'closed')
-              <div class="alert alert-info"><strong>Test is not active, you will do the test when it's active</strong></div>
+            <div class="alert alert-info"><strong>Test is not active, you will do the test when it's active</strong></div>
             @else
-              <a href="/{{$appName}}/exam/attempt?id={{$myTest['test_id']}}&time={{$myTest['duration_minutes']}}" class="btn btn-sm btn-primary">Start Test</a>
+            <a href="/{{$appName}}/exam/attempt?id={{$myTest['test_id']}}&time={{$myTest['duration_minutes']}}" class="btn btn-sm btn-primary d-none" id="start-test-btn">Start Test</a>
+
             @endif
           </div>
         </div>
       </div>
-    @endif
-  </div>
-    
+      @endif
+    </div>
+
   </section>
+
+
+
 
 </main><!-- End #main -->
 
 @include('partials/footer')
+
+<script>
+  $(document).ready(function() {
+    // AJAX call to get user's marks
+    $.ajax({
+      url: "/{{$appName}}/test/my-marks/?test_id={{$myTest['test_id']}}&user_id={{$user_id}}",
+      type: "GET",
+      success: function(response) {
+        var totalMarksForUser = parseInt(response.total_marks_for_user);
+        if (totalMarksForUser > 0) {
+          $('#userScore').text(totalMarksForUser);
+          $('#mark-label').removeClass('d-none');
+
+        } else {
+
+          $('#start-test-btn').removeClass('d-none')
+        }
+      },
+      error: function(xhr, status, error) {
+        console.error(error);
+        // Handle error if needed
+      }
+    });
+  });
+</script>

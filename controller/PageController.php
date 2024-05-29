@@ -364,6 +364,27 @@ class PageController
             'role' => Session::get('role'),
             'avator' => Session::get('avator'),
             'myTest' => $my_test['response'],
+            'user_id' => Session::get('user_id'),
+        ]);
+
+        echo ($html);
+    }
+
+
+    public function render_results_view()
+    {
+        $results = $this->model->get_results();
+
+        $html = $this->blade_view->render('results', [
+            'pageTitle' => " $this->app_name exam",
+            'appName' => $this->app_name,
+            'baseUrl' => $this->app_base_url,
+            'appNameFull' => $this->app_name_full,
+            'username' => Session::get('username'),
+            'role' => Session::get('role'),
+            'avator' => Session::get('avator'),
+            'results' => $results['response'],
+            'user_id' => Session::get('user_id'),
         ]);
 
         echo ($html);

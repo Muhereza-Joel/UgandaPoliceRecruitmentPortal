@@ -66,4 +66,10 @@ class TestController
     {
         $this->model->get_questions_for_test($test_id, $user_id);
     }
+
+    public function get_my_marks($test_id, $user_id)
+    {
+        $result = $this->model->get_my_marks($test_id, $user_id);
+        Request::send_response($result['httpStatus'], $result['response']);
+    }
 }
