@@ -36,6 +36,9 @@
         <hr>
         <a href="/{{$appName}}/job-positions/listing/view?action=view&id={{$job['id']}}" class="btn btn-secondary btn-sm">View Job Details</a>
         
+        @if($role == 'Administrator')
+        <a href="/{{$appName}}/job-positions/listing/assign-exam?id={{$job['id']}}" class="btn btn-primary btn-sm">Assign Apptitude Test</a>
+        @endif
       </div>
     </div>
     @endforeach

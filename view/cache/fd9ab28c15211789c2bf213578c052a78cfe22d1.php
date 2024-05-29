@@ -36,6 +36,9 @@
         <hr>
         <a href="/<?php echo e($appName); ?>/job-positions/listing/view?action=view&id=<?php echo e($job['id']); ?>" class="btn btn-secondary btn-sm">View Job Details</a>
         
+        <?php if($role == 'Administrator'): ?>
+        <a href="/<?php echo e($appName); ?>/job-positions/listing/assign-exam?id=<?php echo e($job['id']); ?>" class="btn btn-primary btn-sm">Assign Apptitude Test</a>
+        <?php endif; ?>
       </div>
     </div>
     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>

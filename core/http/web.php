@@ -32,6 +32,7 @@ Route::post("/$app_name/dashboard/", "controller\PageController@render_dashboard
 Route::post("/$app_name/job-positions/", "controller\PageController@render_job_positions");
 Route::post("/$app_name/job-positions/listing/", "controller\PageController@render_jobs");
 Route::post("/$app_name/job-positions/listing/view", "controller\PageController@render_job_details");
+Route::post("/$app_name/job-positions/listing/assign-exam", "controller\PageController@render_assign_exam");
 Route::post("/$app_name/job-positions/listing/apply", "controller\PageController@render_job_apply");
 Route::post("/$app_name/applications/", "controller\PageController@render_applications");
 Route::post("/$app_name/applications/create-shortlist", "controller\PageController@render_create_shortlist");
@@ -54,6 +55,8 @@ Route::post("/$app_name/jobs/", "controller\JobsController@read_all");
 Route::post("/$app_name/jobs/read-one/", "controller\JobsController@read_one");
 Route::post("/$app_name/jobs/update/", "controller\JobsController@update");
 Route::post("/$app_name/jobs/delete/", "controller\JobsController@delete");
+Route::post("/$app_name/jobs/assign-test/", "controller\JobsController@assign_test");
+Route::post("/$app_name/jobs/drop-test/", "controller\JobsController@drop_test");
 
 
 //Routes for shortlist Controller

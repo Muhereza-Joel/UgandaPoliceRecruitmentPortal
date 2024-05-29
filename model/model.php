@@ -210,17 +210,15 @@ class Model
         $stmt->bind_param('si', $status, $application_id);
         $stmt->execute();
 
-        
+
         if ($stmt->affected_rows > 0) {
             $response = ['message' => 'Application status updated successfully'];
             $httpStatus = 200;
             return ['httpStatus' => $httpStatus, 'response' => $response];
-
         } elseif ($stmt->affected_rows == 0) {
             $response = ['message' => 'Nothing To Update'];
             $httpStatus = 200;
             return ['httpStatus' => $httpStatus, 'response' => $response];
-
         } else {
             $response = ['message' => $this->database->error];
             $httpStatus = 500;
@@ -228,5 +226,110 @@ class Model
         }
 
         $stmt->close();
+    }
+
+    public function assign_test($test_id, $job_id)
+    {
+        // Check if a test is already assigned to the job
+        $checkQuery = "SELECT COUNT(*) as count FROM test_mapping WHERE job_id = ?";
+        $checkStmt = $this->database->prepare($checkQuery);
+        $checkStmt->bind_param('i', $job_id);
+        $checkStmt->execute();
+        $result = $checkStmt->get_result();
+        $row = $result->fetch_assoc();
+        $testExists = $row['count'] > 0;
+        $checkStmt->close();
+
+        if ($testExists) {
+            // Update the existing test assignment
+            $query = "UPDATE test_mapping SET test_id = ? WHERE job_id = ?";
+        } else {
+            // Insert a new test assignment
+            $query = "INSERT INTO test_mapping(test_id, job_id) VALUES(?, ?)";
+        }
+
+        $stmt = $this->database->prepare($query);
+        $stmt->bind_param('ii', $test_id, $job_id);
+        $stmt->execute();
+
+        if ($stmt->affected_rows > 0) {
+            $response = ['message' => 'Assignment saved successfully'];
+            $httpStatus = 200;
+        } elseif ($stmt->affected_rows == 0) {
+            $response = ['message' => 'Assignment saved successfully'];
+            $httpStatus = 200;
+        } else {
+            $response = ['error' => $this->database->error];
+            $httpStatus = 500;
+        }
+
+        $stmt->close();
+
+        return ['httpStatus' => $httpStatus, 'response' => $response];
+    }
+
+    public function get_job_test_assignments($job_id)
+    {
+        $query = "SELECT test_mapping.id AS mapping_id, test.title, test.description, test.duration_minutes, test.total_marks FROM test_mapping
+        JOIN test ON test.test_id = test_mapping.test_id
+        WHERE test_mapping.job_id = ?";
+
+        $stmt = $this->database->prepare($query);
+        $stmt->bind_param('i', $job_id);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $rows = $result->fetch_assoc();
+
+        $stmt->close();
+
+        return ['httpStatus' => 200, 'response' => $rows];
+    }
+
+    public function drop_test_mapping($mapping_id)
+    {
+        $query = "DELETE FROM test_mapping WHERE id = ?";
+
+        $stmt = $this->database->prepare($query);
+        $stmt->bind_param("i", $mapping_id);
+        $stmt->execute();
+
+        if ($stmt->affected_rows > 0) {
+            $response = ['message' => 'Mapping Deleted Successfully'];
+            $httpStatus = 200;
+
+            return ['httpStatus' => $httpStatus, 'response' => $response];
+        } elseif ($stmt->affected_rows == 0) {
+            $response = ['message' => 'Mapping Not Found'];
+            $httpStatus = 200;
+
+            return ['httpStatus' => $httpStatus, 'response' => $response];
+        } else {
+            $response = ['message' => $stmt->error];
+            $httpStatus = 500;
+
+            return ['httpStatus' => $httpStatus, 'response' => $response];
+        }
+    }
+
+
+    public function get_questions_for_test()
+    {
+        $query = "SELECT 
+        q.question_id, 
+        q.question_text, 
+        o.option_id, 
+        o.option_text 
+        FROM 
+            questions q 
+        JOIN 
+            options o 
+        ON 
+            q.question_id = o.question_id 
+        WHERE 
+            q.test_id = test_id
+        ORDER BY 
+            q.question_id, o.option_id;
+        ";
     }
 }

@@ -73,4 +73,16 @@ class JobsController
         $result = $this->model->change_application_status($application_id, $status);
         Request::send_response($result['httpStatus'], $result['response']);
     }
+
+    public function assign_test($test_id, $job_id)
+    {
+        $result = $this->model->assign_test($test_id, $job_id);
+        Request::send_response($result['httpStatus'], $result['response']);
+    }
+
+    public function drop_test($mapping_id)
+    {
+        $result = $this->model->drop_test_mapping($mapping_id);
+        Request::send_response($result['httpStatus'], $result['response']);
+    }
 }

@@ -233,6 +233,30 @@ class PageController
         echo ($html);
     }
 
+    public function render_assign_exam($id)
+    {
+        $tests = $this->testModel->all();
+        $job = $this->jobsModel->findOne($id);
+        $jobAssignment = $this->model->get_job_test_assignments($id);
+        
+        $html = $this->blade_view->render('assignTest', [
+            'pageTitle' => " $this->app_name shortlist",
+            'appName' => $this->app_name,
+            'baseUrl' => $this->app_base_url,
+            'appNameFull' => $this->app_name_full,
+            'username' => Session::get('username'),
+            'role' => Session::get('role'),
+            'avator' => Session::get('avator'),
+            'tests' => $tests['response'],
+            'job' => $job['response'],
+            'jobAssignment' => $jobAssignment['response'],
+
+
+        ]);
+
+        echo ($html);
+    }
+
     public function render_user_shortlist()
     {
         $result = $this->model->get_user_shortlist();
