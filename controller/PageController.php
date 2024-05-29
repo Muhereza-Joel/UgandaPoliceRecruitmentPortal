@@ -369,6 +369,26 @@ class PageController
         echo ($html);
     }
 
+    public function render_attempt_exam($id, $time)
+    {
+
+        $html = $this->blade_view->render('attemptExam', [
+            'pageTitle' => " $this->app_name exam",
+            'appName' => $this->app_name,
+            'baseUrl' => $this->app_base_url,
+            'appNameFull' => $this->app_name_full,
+            'username' => Session::get('username'),
+            'role' => Session::get('role'),
+            'avator' => Session::get('avator'),
+            'test_id' => $id,
+            'user_id' => Session::get('user_id'),
+            'time' => $time,
+            
+        ]);
+
+        echo ($html);
+    }
+
     public function render_mail($shortlist_id, $applicant_id)
     {
         $shortListDetails = $this->shortlistModel->findOne($shortlist_id);

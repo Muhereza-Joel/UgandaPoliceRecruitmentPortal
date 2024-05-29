@@ -58,7 +58,7 @@
             <?php if($myTest['mapping_status'] == 'closed'): ?>
               <div class="alert alert-info"><strong>Test is not active, you will do the test when it's active</strong></div>
             <?php else: ?>
-              <a href="#" class="btn btn-sm btn-primary">Start Test</a>
+              <a href="/<?php echo e($appName); ?>/exam/attempt?id=<?php echo e($myTest['test_id']); ?>&time=<?php echo e($myTest['duration_minutes']); ?>" class="btn btn-sm btn-primary">Start Test</a>
             <?php endif; ?>
           </div>
         </div>

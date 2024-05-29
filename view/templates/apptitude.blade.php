@@ -58,7 +58,7 @@
             @if($myTest['mapping_status'] == 'closed')
               <div class="alert alert-info"><strong>Test is not active, you will do the test when it's active</strong></div>
             @else
-              <a href="#" class="btn btn-sm btn-primary">Start Test</a>
+              <a href="/{{$appName}}/exam/attempt?id={{$myTest['test_id']}}&time={{$myTest['duration_minutes']}}" class="btn btn-sm btn-primary">Start Test</a>
             @endif
           </div>
         </div>

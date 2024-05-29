@@ -52,12 +52,12 @@
     </a>
   </li>
 
-  <li class="nav-item pb-2">
+  <!-- <li class="nav-item pb-2">
     <a class="nav-link collapsed" href="/{{$appName}}/users/">
       <i class="bi bi-cart"></i>
       <span>Users</span>
     </a>
-  </li>
+  </li> -->
 
   @endif
 

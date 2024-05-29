@@ -19,10 +19,10 @@ class ResponseController
     public function create()
     {
         $result = $this->responseObject
-            ->setUserId($this->request->input('user-id'))
-            ->setTestId($this->request->input('test-id'))
-            ->setQuestionId($this->request->input('question-id'))
-            ->setSelectedOptionId($this->request->input('selected-option-id'))
+            ->setUserId($this->request->input('user_id'))
+            ->setTestId($this->request->input('test_id'))
+            ->setQuestionId($this->request->input('question_id'))
+            ->setSelectedOptionId($this->request->input('selected_option_id'))
             ->save();
 
         Request::send_response($result['httpStatus'], $result['response']);

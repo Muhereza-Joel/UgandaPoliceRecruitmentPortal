@@ -3,6 +3,7 @@
 namespace controller;
 
 use core\Request;
+use model\Model;
 use model\Test;
 
 class TestController
@@ -10,11 +11,13 @@ class TestController
 
     private $request;
     private $testObject;
+    private $model;
 
     public function __construct()
     {
         $this->request = new Request();
         $this->testObject = new Test();
+        $this->model = new Model();
     }
     public function create()
     {
@@ -57,5 +60,10 @@ class TestController
     {
         $result = $this->testObject->delete($this->request->input('id'));
         Request::send_response($result['httpStatus'], $result['response']);
+    }
+
+    public function get_questions($test_id, $user_id)
+    {
+        $this->model->get_questions_for_test($test_id, $user_id);
     }
 }

@@ -359,23 +359,71 @@ class Model
     }
 
 
-    public function get_questions_for_test()
+    public function get_questions_for_test($test_id, $user_id)
     {
+        $questions = []; // Initialize an array to store questions and options data
+
+        // Query to fetch questions that the user has already attempted
+        $attemptedQuestionsQuery = "SELECT question_id FROM user_response WHERE test_id = $test_id AND user_id = $user_id";
+        $attemptedQuestionsResult = $this->database->query($attemptedQuestionsQuery);
+
+        $attemptedQuestionIds = [];
+        if ($attemptedQuestionsResult) {
+            while ($row = $attemptedQuestionsResult->fetch_assoc()) {
+                $attemptedQuestionIds[] = $row['question_id'];
+            }
+        }
+
+        // Convert the array of attempted question IDs to a comma-separated string
+        $attemptedQuestionIdsStr = implode(',', $attemptedQuestionIds);
+
+        // Modify the main query to exclude attempted questions
         $query = "SELECT 
-        q.question_id, 
-        q.question_text, 
-        o.option_id, 
-        o.option_text 
-        FROM 
-            questions q 
-        JOIN 
-            options o 
-        ON 
-            q.question_id = o.question_id 
-        WHERE 
-            q.test_id = test_id
-        ORDER BY 
-            q.question_id, o.option_id;
-        ";
+                q.question_id, 
+                q.question_text, 
+                o.option_id, 
+                o.option_text 
+            FROM 
+                questions q 
+            JOIN 
+                options o 
+            ON 
+                q.question_id = o.question_id 
+            WHERE 
+                q.test_id = $test_id";
+
+        if (!empty($attemptedQuestionIdsStr)) {
+            $query .= " AND q.question_id NOT IN ($attemptedQuestionIdsStr)";
+        }
+
+        $query .= " ORDER BY q.question_id, o.option_id";
+
+        // Execute the SQL query to fetch questions and options
+        $result = $this->database->query($query);
+
+        if ($result) {
+            while ($row = $result->fetch_assoc()) {
+                $questionId = $row['question_id'];
+                $option = ['option_id' => $row['option_id'], 'option_text' => $row['option_text']];
+
+                // Check if the question exists in the $questions array
+                if (isset($questions[$questionId])) {
+                    // Add the option to the existing question
+                    $questions[$questionId]['options'][] = $option;
+                } else {
+                    // Create a new question entry
+                    $questions[$questionId] = [
+                        'question_id' => $questionId,
+                        'question_text' => $row['question_text'],
+                        'options' => [$option] // Start with the first option
+                    ];
+                }
+            }
+        }
+
+        // Convert the associative array to indexed array
+        $questions = array_values($questions);
+
+        Request::send_response(200, $questions);
     }
 }
