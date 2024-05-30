@@ -29,6 +29,9 @@
               <tr>
                 <th scope="col">SNo</th>
                 <th scope="col">Name</th>
+                @if($role == 'Administrator')
+                <th scope="col">District</th>
+                @endif
                 <th scope="col">Phone</th>
                 <th scope="col">Job Title</th>
                 <th scope="col">Status</th>
@@ -45,6 +48,9 @@
               <tr>
                 <th scope="row">{{$loop->iteration}}</th>
                 <td>{{$item['name']}}</td>
+                @if($role == 'Administrator')
+                <td>{{$item['district']}}</td>
+                @endif
                 <td>{{$item['phone']}}</td>
                 <td>{{$item['title']}}</td>
                 <td>

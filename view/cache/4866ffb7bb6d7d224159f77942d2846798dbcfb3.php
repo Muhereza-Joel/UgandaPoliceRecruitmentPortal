@@ -26,6 +26,8 @@
                     <tr>
                         <th>SNo.</th>
                         <th>Applicant</th>
+                        <th>District</th>
+                        <th>Phone</th>
                         <th>Exam Title</th>
                         <th>Questions Passed</th>
                         <th>Total Marks</th>
@@ -36,6 +38,8 @@
                     <tr>
                         <td><?php echo e($loop->iteration); ?></td>
                         <td><?php echo e($result['person_name']); ?></td>
+                        <td><?php echo e($result['district']); ?></td>
+                        <td><?php echo e($result['phone']); ?></td>
                         <td><?php echo e($result['test_title']); ?></td>
                         <td><?php echo e($result['correct_questions_count']); ?> out of <?php echo e($result['total_questions_count']); ?></td>
                         <td><?php echo e($result['total_marks']); ?></td>

@@ -26,6 +26,8 @@
                     <tr>
                         <th>SNo.</th>
                         <th>Applicant</th>
+                        <th>District</th>
+                        <th>Phone</th>
                         <th>Exam Title</th>
                         <th>Questions Passed</th>
                         <th>Total Marks</th>
@@ -36,6 +38,8 @@
                     <tr>
                         <td>{{$loop->iteration}}</td>
                         <td>{{$result['person_name']}}</td>
+                        <td>{{$result['district']}}</td>
+                        <td>{{$result['phone']}}</td>
                         <td>{{$result['test_title']}}</td>
                         <td>{{$result['correct_questions_count']}} out of {{$result['total_questions_count']}}</td>
                         <td>{{$result['total_marks']}}</td>

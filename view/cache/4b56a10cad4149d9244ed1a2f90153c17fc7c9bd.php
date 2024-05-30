@@ -29,6 +29,9 @@
               <tr>
                 <th scope="col">SNo</th>
                 <th scope="col">Name</th>
+                <?php if($role == 'Administrator'): ?>
+                <th scope="col">District</th>
+                <?php endif; ?>
                 <th scope="col">Phone</th>
                 <th scope="col">Job Title</th>
                 <th scope="col">Status</th>
@@ -45,6 +48,9 @@
               <tr>
                 <th scope="row"><?php echo e($loop->iteration); ?></th>
                 <td><?php echo e($item['name']); ?></td>
+                <?php if($role == 'Administrator'): ?>
+                <td><?php echo e($item['district']); ?></td>
+                <?php endif; ?>
                 <td><?php echo e($item['phone']); ?></td>
                 <td><?php echo e($item['title']); ?></td>
                 <td>
