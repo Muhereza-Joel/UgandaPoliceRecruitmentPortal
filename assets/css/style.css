@@ -15,7 +15,8 @@
 
 body {
   font-family: "Open Sans", sans-serif;
-  background: #020f1b;
+  background: #011220;
+  /* background: #020f1b; */
   color: #ffffff;
   overflow-x: hidden;
 }
@@ -222,7 +223,7 @@ h6 {
   margin-bottom: 10px;
   border: none;
   border-radius: 5px;
-  background-color: #ffffff;
+  background-color: #f2f2f2;
   box-shadow: 0px 0 30px rgba(1, 41, 112, 0.1);
   border: 3px solid rgb(189, 190, 185);
 }
@@ -386,7 +387,7 @@ h6 {
   z-index: 997;
   height: 60px;
   /* box-shadow: 0px 2px 20px rgba(255, 255, 255, 0.1); */
-  background-color: #020f1b;
+  background-color: #011220;
   padding-left: 20px;
   /* Toggle Sidebar Button */
   /* Search Bar */
@@ -615,7 +616,7 @@ h6 {
   scrollbar-width: thin;
   scrollbar-color: #aab7cf transparent;
   /* box-shadow: 0px 0px 20px rgba(1, 41, 112, 0.1); */
-  background-color: #020f1b;
+  background-color: #011220;
 }
 
 @media (max-width: 1199px) {
@@ -689,7 +690,7 @@ h6 {
   font-weight: 600;
   color: #f8f8fa;
   transition: 0.3;
-  background: #00000b;
+  background: #03243e;
   padding: 10px 15px;
   border-radius: 4px;
 }
@@ -701,8 +702,8 @@ h6 {
 }
 
 .sidebar-nav .nav-link.collapsed {
-  color: #012970;
-  background: #fff;
+  color: #f8f9fa;
+  background: #011220;
 }
 
 .sidebar-nav .nav-link.collapsed i {

@@ -94,7 +94,7 @@
         <div class="card py-4 px-2 my-3">
             <div class="h5 text-secondary fw-bold">Please add required documents according to the job requirements.</div>
             <small class="text-danger">Only PDF Files are allowed</small><br>
-            <form method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+            <form id="application-form" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
                 <div class="form-group d-flex align-items-center">
                     <input required class="form-control me-2 w-75 file-input" type="file" name="pdf" accept="application/pdf">
                     <div class="invalid-feedback">Please choose a pdf file.</div>
@@ -145,12 +145,27 @@
 
         $('#submit-application-btn').click(function() {
             var positionId = $(this).data('id');
+            var filesSelected = $('.file-input').get().some(input => input.files.length > 0);
+
+            if (!filesSelected) {
+                Toastify({
+                    text: 'Please attach your cv to this application.',
+                    duration: 5000,
+                    gravity: 'bottom', // Changed position to top
+                    position: 'left', // Changed position to center
+                    backgroundColor: 'red',
+                }).showToast();
+                return;
+            }
+
+            var formData = new FormData($('#application-form')[0]);
 
             $.ajax({
                 method: 'post',
                 url: `/{{$appName}}/jobs/applications/create/?position_id=${positionId}`,
                 processData: false,
                 contentType: false,
+                data: formData,
                 success: function(response) {
                     Toastify({
                         text: response.message,
@@ -218,7 +233,5 @@
                 }
             });
         });
-
-
     });
 </script>

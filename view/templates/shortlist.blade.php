@@ -18,7 +18,7 @@
 
   <section class="section dashboard">
 
-    <div class="row">
+    <div class="row g-0 p-2">
       <div class="card">
         <div class="card-body">
           <h5 class="card-title">{{$role == 'Administrator' ? 'All Shortisted Candidates' : 'Your Shortlist'}}</h5>

@@ -25,7 +25,7 @@
 
   <section class="section dashboard">
 
-    <div class="row">
+    <div class="row p-2 g-2">
       <div class="card">
         <div class="card-body">
           <h5 class="card-title">Showing <?php echo e($role == 'Administrator' ? 'all' : 'your'); ?> applications</h5>

@@ -42,7 +42,7 @@
                                     </div>
                                     <div class="col-12">
 
-                                        <p class="small mb-0">If you don't have account? <a href="/<?php echo e($appName); ?>/auth/register/">click here to</a> create an register</p>
+                                        <p class="small mb-0">If you don't have account? <a href="/<?php echo e($appName); ?>/auth/register/">click here to</a> create an account</p>
                                     </div>
                                 </form>
 

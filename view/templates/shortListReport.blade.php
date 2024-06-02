@@ -18,7 +18,7 @@
 
     <section class="section dashboard">
 
-        <div class="row">
+        <div class="row g-0 p-2">
             <div class="alert alert-info">You can enter the district name in the input to get shortlisted applicants from that district and if you want to get the whole list, click export pdf without providing the district name.</div>
             <div class="card">
                 <div class="card-body">
