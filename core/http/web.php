@@ -47,6 +47,7 @@ Route::post("/$app_name/manage-exams/test/add-questions", "controller\PageContro
 Route::post("/$app_name/users/", "controller\PageController@render_users");
 Route::post("/$app_name/exam/attempt", "controller\PageController@render_attempt_exam");
 Route::post("/$app_name/exams/results/", "controller\PageController@render_results_view");
+Route::post("/$app_name/reports/shortlist/", "controller\PageController@render_shortlist_report_view");
 
 
 //Routes for jobs controller
@@ -96,5 +97,8 @@ Route::post("/$app_name/responses/create/", "controller\ResponseController@creat
 
 //Routes for mail controller
 Route::post("/$app_name/mail/create/", "controller\MailController@send_mail");
+
+//Routes for reports controller
+Route::post("/$app_name/pdf/shortlist/export/", "controller\ReportsController@export_shortlist_report");
 
 ?>

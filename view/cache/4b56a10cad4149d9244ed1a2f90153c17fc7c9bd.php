@@ -55,7 +55,7 @@
                 <td><?php echo e($item['title']); ?></td>
                 <td>
                   <?php if($item['status'] == 'shortlisted'): ?>
-                    <span class="badge bg-success">Shortlisted</span>
+                    <span class="badge bg-success">Shortlisted on <?php echo e($item['created_at']); ?></span>
                     
                   <?php endif; ?>
                 </td>
@@ -94,3 +94,9 @@
 </main><!-- End #main -->
 
 <?php echo $__env->make('partials/footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+
+<script>
+  $(document).ready(function(){
+    
+  })
+</script>

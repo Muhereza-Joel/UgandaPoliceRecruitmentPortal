@@ -59,6 +59,13 @@
     </a>
   </li>
 
+  <li class="nav-item pb-2">
+    <a class="nav-link collapsed" href="/{{$appName}}/reports/shortlist/">
+      <i class="bi bi-grid"></i>
+      <span>Shortlist Reports</span>
+    </a>
+  </li>
+
   @endif
 
   @if($role == 'User')

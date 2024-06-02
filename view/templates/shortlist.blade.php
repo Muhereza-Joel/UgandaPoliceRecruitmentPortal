@@ -55,7 +55,7 @@
                 <td>{{$item['title']}}</td>
                 <td>
                   @if($item['status'] == 'shortlisted')
-                    <span class="badge bg-success">Shortlisted</span>
+                    <span class="badge bg-success">Shortlisted on {{$item['created_at']}}</span>
                     
                   @endif
                 </td>
@@ -94,3 +94,9 @@
 </main><!-- End #main -->
 
 @include('partials/footer')
+
+<script>
+  $(document).ready(function(){
+    
+  })
+</script>

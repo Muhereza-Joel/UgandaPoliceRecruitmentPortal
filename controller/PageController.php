@@ -430,4 +430,22 @@ class PageController
 
         echo ($html);
     }
+
+    public function render_shortlist_report_view()
+    {
+        $result = $this->model->get_shortlist();
+
+        $html = $this->blade_view->render('shortListReport', [
+            'pageTitle' => " $this->app_name exam",
+            'appName' => $this->app_name,
+            'baseUrl' => $this->app_base_url,
+            'appNameFull' => $this->app_name_full,
+            'username' => Session::get('username'),
+            'role' => Session::get('role'),
+            'avator' => Session::get('avator'),
+            'shortlist' => $result['response'],
+        ]);
+
+        echo ($html);
+    }
 }

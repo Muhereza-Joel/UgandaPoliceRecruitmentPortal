@@ -21,4 +21,10 @@ class Request
         http_response_code($http_status);
         echo json_encode($response);
     }
+
+    public static function send_pdf_response($http_status, $response){
+        //Avoid setting the content type because it prompts a download instead
+        http_response_code($http_status);
+        echo base64_encode($response);
+    }
 }

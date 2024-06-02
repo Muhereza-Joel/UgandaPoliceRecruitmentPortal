@@ -361,29 +361,29 @@ class Model
     public function get_results()
     {
         $query = "SELECT
-        user_response.user_id,
-        user_profile.name AS person_name,
-        user_profile.phone,
-        user_profile.district,
-        test.title AS test_title,
-        COUNT(*) AS correct_questions_count,
-        total_questions.total_questions_count,
-        COUNT(*) * (test.total_marks / total_questions.total_questions_count) AS total_marks
-        FROM
-            user_response
-        JOIN
-            options ON user_response.selected_option_id = options.option_id
-        JOIN
-            (SELECT test_id, COUNT(*) AS total_questions_count FROM questions GROUP BY test_id) AS total_questions ON user_response.test_id = total_questions.test_id
-        JOIN
-            test ON user_response.test_id = test.test_id
-        JOIN
-            user_profile ON user_response.user_id = user_profile.user_id
-        WHERE
-            options.is_correct = 1
-        GROUP BY
-            user_response.user_id, user_profile.name, test.title, test.total_marks, total_questions.total_questions_count
-    ";
+            user_response.user_id,
+            user_profile.name AS person_name,
+            user_profile.phone,
+            user_profile.district,
+            test.title AS test_title,
+            COUNT(*) AS correct_questions_count,
+            total_questions.total_questions_count,
+            COUNT(*) * (test.total_marks / total_questions.total_questions_count) AS total_marks
+            FROM
+                user_response
+            JOIN
+                options ON user_response.selected_option_id = options.option_id
+            JOIN
+                (SELECT test_id, COUNT(*) AS total_questions_count FROM questions GROUP BY test_id) AS total_questions ON user_response.test_id = total_questions.test_id
+            JOIN
+                test ON user_response.test_id = test.test_id
+            JOIN
+                user_profile ON user_response.user_id = user_profile.user_id
+            WHERE
+                options.is_correct = 1
+            GROUP BY
+                user_response.user_id, user_profile.name, test.title, test.total_marks, total_questions.total_questions_count
+        ";
 
         $stmt = $this->database->prepare($query);
         $stmt->execute();
@@ -399,33 +399,33 @@ class Model
     public function get_my_marks($test_id, $user_id)
     {
         $query = "SELECT 
-        (correct_questions_count / total_questions_count) * t.total_marks AS total_marks_for_user
-        FROM (
-            SELECT 
-                COUNT(*) AS correct_questions_count
-            FROM 
-                user_response ur
-            JOIN 
-                options o ON ur.selected_option_id = o.option_id
+            (correct_questions_count / total_questions_count) * t.total_marks AS total_marks_for_user
+            FROM (
+                SELECT 
+                    COUNT(*) AS correct_questions_count
+                FROM 
+                    user_response ur
+                JOIN 
+                    options o ON ur.selected_option_id = o.option_id
+                WHERE 
+                    o.is_correct = 1
+                AND 
+                    ur.user_id = ?
+                AND 
+                    ur.test_id = ?
+            ) AS correct_count,
+            (
+                SELECT 
+                    COUNT(*) AS total_questions_count
+                FROM 
+                    questions q
+                WHERE 
+                    q.test_id = ?
+            ) AS total_count,
+            test t
             WHERE 
-                o.is_correct = 1
-            AND 
-                ur.user_id = ?
-            AND 
-                ur.test_id = ?
-        ) AS correct_count,
-        (
-            SELECT 
-                COUNT(*) AS total_questions_count
-            FROM 
-                questions q
-            WHERE 
-                q.test_id = ?
-        ) AS total_count,
-        test t
-        WHERE 
-            t.test_id = ?
-    ";
+                t.test_id = ?
+        ";
 
         $stmt = $this->database->prepare($query);
         $stmt->bind_param('iiii', $user_id, $test_id, $test_id, $test_id);
@@ -438,7 +438,6 @@ class Model
 
         return ['httpStatus' => 200, 'response' => $rows];
     }
-
 
     public function get_questions_for_test($test_id, $user_id)
     {
@@ -506,5 +505,47 @@ class Model
         $questions = array_values($questions);
 
         Request::send_response(200, $questions);
+    }
+
+    public function export_shortlist($district)
+    {
+        if (!empty($district)) {
+            // Query with district filtering
+            $query = "SELECT a.application_id, s.id AS shortlist_id, up.user_id, up.name, up.district, up.phone, jp.title, s.status, s.notes, s.created_at 
+                  FROM shortlist s 
+                  JOIN application a ON s.application_id = a.application_id
+                  JOIN user_profile up ON up.user_id = a.applicant_id
+                  JOIN job_positions jp ON jp.id = a.position_id
+                  WHERE up.district = ?";
+
+            // Prepare the statement
+            $stmt = $this->database->prepare($query);
+
+            // Bind the district parameter to the statement
+            $stmt->bind_param('s', $district);
+        } else {
+            // Query without district filtering
+            $query = "SELECT a.application_id, s.id AS shortlist_id, up.user_id, up.name, up.district, up.phone, jp.title, s.status, s.notes, s.created_at 
+                  FROM shortlist s 
+                  JOIN application a ON s.application_id = a.application_id
+                  JOIN user_profile up ON up.user_id = a.applicant_id
+                  JOIN job_positions jp ON jp.id = a.position_id";
+
+            // Prepare the statement
+            $stmt = $this->database->prepare($query);
+        }
+
+        // Execute the statement
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        // Fetch all rows as an associative array
+        $rows = $result->fetch_all(MYSQLI_ASSOC);
+
+        // Close the statement
+        $stmt->close();
+
+        // Return the result with a 200 HTTP status
+        return ['httpStatus' => 200, 'response' => $rows];
     }
 }
