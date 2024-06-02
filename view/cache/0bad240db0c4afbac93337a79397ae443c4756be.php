@@ -75,6 +75,7 @@
                         <a href="/<?php echo e($appName); ?>/jobs/applications/update-status/?application_id=<?php echo e($application['application_id']); ?>&status=reviewing" class="dropdown-item" id="review-application-btn">Review Application</a>
                         <?php endif; ?>
                         <?php if($application['status'] == 'reviewing'): ?>
+                        <a href="/<?php echo e($appName); ?>/applications/view?application_id=<?php echo e($application['application_id']); ?>" class="dropdown-item">View application details</a>
                         <a href="/<?php echo e($appName); ?>/jobs/applications/update-status/?application_id=<?php echo e($application['application_id']); ?>&status=accepted" class="dropdown-item" id="accept-application-btn">Accept Application</a>
                         <?php endif; ?>
                         <?php if($application['status'] == 'accepted'): ?>

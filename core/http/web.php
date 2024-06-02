@@ -35,6 +35,7 @@ Route::post("/$app_name/job-positions/listing/view", "controller\PageController@
 Route::post("/$app_name/job-positions/listing/assign-exam", "controller\PageController@render_assign_exam");
 Route::post("/$app_name/job-positions/listing/apply", "controller\PageController@render_job_apply");
 Route::post("/$app_name/applications/", "controller\PageController@render_applications");
+Route::post("/$app_name/applications/view", "controller\PageController@render_view_application");
 Route::post("/$app_name/applications/create-shortlist", "controller\PageController@render_create_shortlist");
 Route::post("/$app_name/my-applications/", "controller\PageController@render_my_applications");
 Route::post("/$app_name/shortlist/", "controller\PageController@render_shortlist");

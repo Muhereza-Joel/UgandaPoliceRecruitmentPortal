@@ -228,6 +228,27 @@ class Model
         $stmt->close();
     }
 
+    public function get_application_details($application_id)
+    {
+        $query = "SELECT ap.application_id, ap.status, up.name, up.nin, up.dob, up.gender, up.about, up.company, up.job, up.country, up.phone, up.image_url, up.district, up.village, jp.title, jp.description, files.url AS file_url, ap.created_at FROM application ap 
+        JOIN user_profile up ON ap.applicant_id = up.user_id
+        JOIN job_positions jp ON jp.id = ap.position_id
+        JOIN files ON files.application_id = ap.applicant_id
+        WHERE ap.application_id = ?
+        ";
+
+        $stmt = $this->database->prepare($query);
+        $stmt->bind_param("i", $application_id);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $user_details = $result->fetch_assoc();
+
+        $stmt->close();
+
+        return ['httpStatus' => 200, 'response' => $user_details];
+    }
+
     public function assign_test($test_id, $job_id)
     {
         // Check if a test is already assigned to the job

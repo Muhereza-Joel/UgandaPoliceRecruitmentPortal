@@ -370,7 +370,6 @@ class PageController
         echo ($html);
     }
 
-
     public function render_results_view()
     {
         $results = $this->model->get_results();
@@ -444,6 +443,24 @@ class PageController
             'role' => Session::get('role'),
             'avator' => Session::get('avator'),
             'shortlist' => $result['response'],
+        ]);
+
+        echo ($html);
+    }
+
+    public function render_view_application($application_id)
+    {
+        $result = $this->model->get_application_details($application_id);
+
+        $html = $this->blade_view->render('viewApplication', [
+            'pageTitle' => " $this->app_name view application details",
+            'appName' => $this->app_name,
+            'baseUrl' => $this->app_base_url,
+            'appNameFull' => $this->app_name_full,
+            'username' => Session::get('username'),
+            'role' => Session::get('role'),
+            'avator' => Session::get('avator'),
+            'application' => $result['response'],
         ]);
 
         echo ($html);

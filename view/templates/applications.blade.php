@@ -75,6 +75,7 @@
                         <a href="/{{$appName}}/jobs/applications/update-status/?application_id={{$application['application_id']}}&status=reviewing" class="dropdown-item" id="review-application-btn">Review Application</a>
                         @endif
                         @if($application['status'] == 'reviewing')
+                        <a href="/{{$appName}}/applications/view?application_id={{$application['application_id']}}" class="dropdown-item">View application details</a>
                         <a href="/{{$appName}}/jobs/applications/update-status/?application_id={{$application['application_id']}}&status=accepted" class="dropdown-item" id="accept-application-btn">Accept Application</a>
                         @endif
                         @if($application['status'] == 'accepted')
