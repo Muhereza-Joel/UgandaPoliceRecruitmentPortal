@@ -36,7 +36,9 @@
         <hr>
         <form id="deleteForm" action="/<?php echo e($appName); ?>/jobs/delete/" method="POST">
           <div class="d-flex">
-            <a href="/<?php echo e($appName); ?>/job-positions/listing/apply?id=<?php echo e($job['id']); ?>" class="btn btn-primary btn-sm me-2">Apply Now</a>
+            <?php if($role == 'User'): ?>
+              <a href="/<?php echo e($appName); ?>/job-positions/listing/apply?id=<?php echo e($job['id']); ?>" class="btn btn-primary btn-sm me-2">Apply Now</a>
+            <?php endif; ?>
             <?php if($role == 'Administrator'): ?>
             <input type="hidden" name="id" value="<?php echo e($job['id']); ?>">
             <button type="button" class="btn btn-danger btn-sm" id="remove-btn" data-toggle="modal" data-target="#confirmDeleteModal">Delete Job</button>

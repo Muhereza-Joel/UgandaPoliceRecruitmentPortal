@@ -81,6 +81,26 @@
 
         </form><!-- End floating Labels Form -->
       </div>
+
+      <div class="col-sm-4">
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Instructions</h5>
+      <ul>
+        <li>Enter the job title in the "Job Title" field.</li>
+        <li>Describe the job in detail using the "Job Description" editor.</li>
+        <li>List the requirements for the job using the "Job Requirements" editor.</li>
+        <li>Specify the responsibilities of the position using the "Job Responsibilities" editor.</li>
+        <li>Click the "Submit Job Position" button to save the job post.</li>
+      </ul>
+
+      <div class="alert alert-info">
+        <strong>After creating a job, go to the jobs section and assign this job an apptitude test that applicants will do when shortlisted</strong>
+      </div>
+    </div>
+  </div>
+</div>
+
     </div>
   </section>
 

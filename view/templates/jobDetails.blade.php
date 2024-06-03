@@ -36,7 +36,9 @@
         <hr>
         <form id="deleteForm" action="/{{$appName}}/jobs/delete/" method="POST">
           <div class="d-flex">
-            <a href="/{{$appName}}/job-positions/listing/apply?id={{$job['id']}}" class="btn btn-primary btn-sm me-2">Apply Now</a>
+            @if($role == 'User')
+              <a href="/{{$appName}}/job-positions/listing/apply?id={{$job['id']}}" class="btn btn-primary btn-sm me-2">Apply Now</a>
+            @endif
             @if($role == 'Administrator')
             <input type="hidden" name="id" value="{{$job['id']}}">
             <button type="button" class="btn btn-danger btn-sm" id="remove-btn" data-toggle="modal" data-target="#confirmDeleteModal">Delete Job</button>
