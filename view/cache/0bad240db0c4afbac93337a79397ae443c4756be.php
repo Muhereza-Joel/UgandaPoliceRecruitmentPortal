@@ -26,10 +26,14 @@
   <section class="section dashboard">
 
     <div class="row p-2 g-2">
+      <div class="alert alert-info">
+        Please note that applications are displayed from newer to older. To view the application details, you have to change its status to reviewing first. 
+        To be able to shortlist the applicant, you have to accept this application first. <br>
+        <strong>Please note that the status of the application cannot be reversed. Update the status only when you are sure of what you are doing.</strong>
+      </div>
       <div class="card">
         <div class="card-body">
           <h5 class="card-title">Showing <?php echo e($role == 'Administrator' ? 'all' : 'your'); ?> applications</h5>
-
           <!-- Table with stripped rows -->
           <div class="table-responsive">
             <table class="table table-striped datatable table-responsive" id="applications-table">

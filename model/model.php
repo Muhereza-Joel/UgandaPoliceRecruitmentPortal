@@ -143,7 +143,8 @@ class Model
     {
         $query = "SELECT a.application_id, a.applicant_id, a.position_id, a.status, up.name, up.phone, jp.title, a.created_at FROM application a 
         JOIN user_profile up ON a.applicant_id = up.user_id
-        JOIN job_positions jp ON jp.id = a.position_id";
+        JOIN job_positions jp ON jp.id = a.position_id
+        ORDER BY a.application_id DESC";
 
         $stmt = $this->database->prepare($query);
         $stmt->execute();

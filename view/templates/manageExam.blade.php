@@ -69,6 +69,10 @@
       </div>
       <div class="col-lg-8">
 
+       <div class="alert alert-info">
+        Please don't forget to assign the test you create here to the jobs you created. Be informed that re-assigning a test to a job that has a test already will update it to the new assignment.
+       </div>
+
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Current Tests in the system</h5>
