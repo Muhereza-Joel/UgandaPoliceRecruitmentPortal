@@ -100,13 +100,27 @@ class Model
 
     public function create_application($position_id)
     {
-
-        $query = "INSERT INTO application(applicant_id, position_id) VALUES(?, ?)";
         $current_user = Session::get('user_id');
 
+        // Check if the user has already applied for the same position
+        $checkQuery = "SELECT COUNT(*) as count FROM application WHERE applicant_id = ? AND position_id = ?";
+        $checkStmt = $this->database->prepare($checkQuery);
+        $checkStmt->bind_param("ii", $current_user, $position_id);
+        $checkStmt->execute();
+        $result = $checkStmt->get_result();
+        $row = $result->fetch_assoc();
+        $checkStmt->close();
+
+        if ($row['count'] > 0) {
+            $response = ['message' => 'You have already applied for this position'];
+            $httpStatus = 400;
+            return ['httpStatus' => $httpStatus, 'response' => $response];
+        }
+
+        // Proceed with the application if the user hasn't applied yet
+        $query = "INSERT INTO application(applicant_id, position_id) VALUES(?, ?)";
         $stmt = $this->database->prepare($query);
         $stmt->bind_param("ii", $current_user, $position_id);
-
         $stmt->execute();
 
         $lastInsertId = $this->database->insert_id; // Get the last insert ID
@@ -114,15 +128,16 @@ class Model
         if ($stmt->affected_rows > 0) {
             $response = ['message' => 'Application saved successfully', 'last_insert_id' => $lastInsertId];
             $httpStatus = 200;
-            return ['httpStatus' => $httpStatus, 'response' => $response];
         } else {
             $response = ['message' => $this->database->error];
             $httpStatus = 500;
-            return ['httpStatus' => $httpStatus, 'response' => $response];
         }
 
         $stmt->close();
+
+        return ['httpStatus' => $httpStatus, 'response' => $response];
     }
+
 
     public function get_all_applications()
     {

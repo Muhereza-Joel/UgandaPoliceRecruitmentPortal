@@ -149,10 +149,10 @@
 
             if (!filesSelected) {
                 Toastify({
-                    text: 'Please attach your cv to this application.',
+                    text: 'Please attach your CV to this application.',
                     duration: 5000,
-                    gravity: 'bottom', // Changed position to top
-                    position: 'left', // Changed position to center
+                    gravity: 'bottom',
+                    position: 'left',
                     backgroundColor: 'red',
                 }).showToast();
                 return;
@@ -166,72 +166,97 @@
                 processData: false,
                 contentType: false,
                 data: formData,
-                success: function(response) {
-                    Toastify({
-                        text: response.message,
-                        duration: 3000,
-                        gravity: 'bottom',
-                        position: 'left',
-                        backgroundColor: 'green',
-                    }).showToast();
+                success: function(response, textStatus, xhr) {
+                    if (xhr.status === 200) {
+                        Toastify({
+                            text: response.message,
+                            duration: 3000,
+                            gravity: 'bottom',
+                            position: 'left',
+                            backgroundColor: 'green',
+                        }).showToast();
 
-                    // Upload files sequentially with delay
-                    $('.file-input').each(function() {
-                        var fileInput = $(this)[0];
-                        var files = fileInput.files;
-                        var applicationId = response.last_insert_id;
+                        // Upload files sequentially with delay
+                        $('.file-input').each(function() {
+                            var fileInput = $(this)[0];
+                            var files = fileInput.files;
+                            var applicationId = response.last_insert_id;
 
-                        function uploadFile(index) {
-                            if (index >= files.length) return;
+                            function uploadFile(index) {
+                                if (index >= files.length) return;
 
-                            var formData = new FormData();
-                            formData.append('pdf', files[index]);
-                            formData.append('application_id', applicationId);
+                                var formData = new FormData();
+                                formData.append('pdf', files[index]);
+                                formData.append('application_id', applicationId);
 
-                            $.ajax({
-                                method: 'post',
-                                url: `/<?php echo e($appName); ?>/file-upload/`,
-                                data: formData,
-                                processData: false,
-                                contentType: false,
-                                success: function(uploadResponse) {
-                                    Toastify({
-                                        text: 'File uploaded successfully',
-                                        duration: 3000,
-                                        gravity: 'bottom',
-                                        position: 'left',
-                                        backgroundColor: 'green',
-                                    }).showToast();
+                                $.ajax({
+                                    method: 'post',
+                                    url: `/<?php echo e($appName); ?>/file-upload/`,
+                                    data: formData,
+                                    processData: false,
+                                    contentType: false,
+                                    success: function(uploadResponse) {
+                                        Toastify({
+                                            text: 'File uploaded successfully',
+                                            duration: 3000,
+                                            gravity: 'bottom',
+                                            position: 'left',
+                                            backgroundColor: 'green',
+                                        }).showToast();
 
-                                    // Upload next file after delay
-                                    setTimeout(function() {
-                                        uploadFile(index + 1);
-                                    }, 1000); // 1-second delay
-                                },
-                                error: function(jqXHR, textStatus, errorThrown) {
-                                    Toastify({
-                                        text: 'An error occurred while uploading the file',
-                                        duration: 3000,
-                                        gravity: 'bottom',
-                                        position: 'left',
-                                        backgroundColor: 'red',
-                                    }).showToast();
+                                        // Upload next file after delay
+                                        setTimeout(function() {
+                                            uploadFile(index + 1);
+                                        }, 1000); // 1-second delay
+                                    },
+                                    error: function(jqXHR, textStatus, errorThrown) {
+                                        Toastify({
+                                            text: 'An error occurred while uploading the file',
+                                            duration: 3000,
+                                            gravity: 'bottom',
+                                            position: 'left',
+                                            backgroundColor: 'red',
+                                        }).showToast();
 
-                                    // Upload next file after delay, even on error
-                                    setTimeout(function() {
-                                        uploadFile(index + 1);
-                                    }, 1000); // 1-second delay
-                                }
-                            });
-                        }
+                                        // Upload next file after delay, even on error
+                                        setTimeout(function() {
+                                            uploadFile(index + 1);
+                                        }, 1000); // 1-second delay
+                                    }
+                                });
+                            }
 
-                        uploadFile(0);
-                    });
+                            uploadFile(0);
+                        });
+                    } else if (xhr.status === 400) {
+                        Toastify({
+                            text: response.message,
+                            duration: 5000,
+                            gravity: 'bottom',
+                            position: 'left',
+                            backgroundColor: 'red',
+                        }).showToast();
+                    } else {
+                        Toastify({
+                            text: response.message,
+                            duration: 5000,
+                            gravity: 'bottom',
+                            position: 'left',
+                            backgroundColor: 'red',
+                        }).showToast();
+                    }
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
-                    alert('An Error occurred, failed to submit application');
+                    Toastify({
+                        text: jqXHR.responseJSON.message,
+                        duration: 5000,
+                        gravity: 'bottom',
+                        position: 'left',
+                        backgroundColor: 'red',
+                    }).showToast();
                 }
             });
         });
+
     });
 </script>
