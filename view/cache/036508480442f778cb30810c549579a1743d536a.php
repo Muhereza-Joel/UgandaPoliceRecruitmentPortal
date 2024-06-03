@@ -62,8 +62,16 @@
             event.preventDefault();
 
             if (this.checkValidity() === true) {
-
                 let formData = new FormData(this);
+
+                // Show loading toast
+                const loadingToast = Toastify({
+                    text: "Sending email, please wait...",
+                    duration: -1, // Duration -1 means the toast will not automatically disappear
+                    gravity: 'bottom',
+                    position: 'left',
+                    backgroundColor: '#222',
+                }).showToast();
 
                 $.ajax({
                     method: "POST",
@@ -72,6 +80,9 @@
                     processData: false,
                     contentType: false,
                     success: function(response) {
+                        // Remove loading toast
+                        loadingToast.hideToast();
+
                         Toastify({
                             text: response.message || "Email Sent Successfully",
                             duration: 4000,
@@ -85,6 +96,9 @@
                         }, 4500)
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
+                        // Remove loading toast
+                        loadingToast.hideToast();
+
                         let message = "An error occurred";
 
                         if (jqXHR.responseJSON && jqXHR.responseJSON.message) {
