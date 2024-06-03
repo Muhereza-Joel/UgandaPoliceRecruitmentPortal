@@ -23,6 +23,11 @@
       <div class="col-12">
         <div class="alert alert-warning"><strong>No test details available at the moment.</strong></div>
       </div>
+      @endif
+      @if($status['shortlist_status'] == 'Not-on-Shortlist')
+      <div class="col-12">
+        <div class="alert alert-info"><strong>Please your are not yet shortlisted for any job. When your application is reviewed and accepted, you will be shortlisted and your will attempt your aptitude test. Thankyou.</strong></div>
+      </div>
       @else
       <div class="col-sm-6">
         <div class="card p-2">
@@ -67,6 +72,7 @@
         </div>
       </div>
       @endif
+      
     </div>
 
   </section>

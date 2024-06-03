@@ -354,6 +354,7 @@ class PageController
     public function render_start_exam()
     {
         $my_test = $this->model->get_my_test();
+        $result = $this->model->check_user_shortlist_status();
 
         $html = $this->blade_view->render('apptitude', [
             'pageTitle' => " $this->app_name exam",
@@ -365,6 +366,7 @@ class PageController
             'avator' => Session::get('avator'),
             'myTest' => $my_test['response'],
             'user_id' => Session::get('user_id'),
+            'status' => $result['response'],
         ]);
 
         echo ($html);

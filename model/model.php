@@ -249,6 +249,33 @@ class Model
         return ['httpStatus' => 200, 'response' => $user_details];
     }
 
+    public function check_user_shortlist_status()
+    {
+        $query = "SELECT 
+        application.application_id,
+        CASE 
+            WHEN shortlist.application_id IS NOT NULL THEN 'On-Shortlist'
+            ELSE 'Not-on-Shortlist'
+        END AS shortlist_status
+        FROM application
+        LEFT JOIN shortlist ON shortlist.application_id = application.application_id
+        WHERE application.applicant_id = ?;
+        ";
+
+        $user_id = Session::get('user_id');
+
+        $stmt = $this->database->prepare($query);
+        $stmt->bind_param("i", $user_id);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+
+        $stmt->close();
+
+        return ['httpStatus' => 200, 'response' => $row];
+    }
+
     public function assign_test($test_id, $job_id)
     {
         // Check if a test is already assigned to the job
