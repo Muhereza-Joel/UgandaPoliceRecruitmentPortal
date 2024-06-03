@@ -12,12 +12,22 @@ class MailController
     private $blade_view;
     private $app_name;
     private $app_base_url;
+    private $smtp_server;
+    private $mail_agent;
+    private $mail_key;
+    private $mail_sender;
+    private $mail_title;
 
     public function __construct()
     {
         $this->blade_view = new BladeView();
         $this->app_name = getenv("APP_NAME");
         $this->app_base_url = getenv("APP_BASE_URL");
+        $this->smtp_server = getenv("SMTP_SERVER");
+        $this->mail_agent = getenv("APP_MAIL_CLIENT");
+        $this->mail_key = getenv("APP_MAIL_KEY");
+        $this->mail_sender = getenv("APP_MAIL_SENDER");
+        $this->mail_title = getenv("APP_MAIL_TITLE");
     }
 
     public function send_mail()
@@ -29,7 +39,7 @@ class MailController
         $body = $request->input('body');
 
         $html_body = $this->blade_view->render('shortListEmail', [
-            'pageTitle' => " $this->app_name applications",
+            'pageTitle' => " $this->app_name",
             'appName' => $this->app_name,
             'baseUrl' => $this->app_base_url,
             'body' => $body,
@@ -40,13 +50,11 @@ class MailController
         try {
             // Server settings
             $mail->SMTPDebug = 0;                     
-            $mail->isSMTP();                           
-            // $mail->Host = 'smtp.elasticemail.com';          
-            $mail->Host = 'smtp.gmail.com';          
+            $mail->isSMTP();                              
+            $mail->Host = $this->smtp_server;          
             $mail->SMTPAuth = true;                    
-            $mail->Username = 'muherezajoel40@gmail.com'; 
-            // $mail->Password = 'CE9FDAEC705635C3EE984B8A5497B2BB0902';          
-            $mail->Password = 'kmmt srcd nmuo nudn';          
+            $mail->Username = $this->mail_agent;          
+            $mail->Password = $this->mail_key;          
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; // Enable TLS encryption, `PHPMailer::ENCRYPTION_SMTPS` also accepted
             $mail->Port = 587;
 
@@ -59,7 +67,7 @@ class MailController
             ); 
 
             // Recipients
-            $mail->setFrom('noreply@tagbatwaha.com', 'Uganda Police Recruitment Portal');
+            $mail->setFrom($this->mail_sender, $this->mail_title);
             $mail->addAddress($to);                    // Add a recipient
 
             // Content
