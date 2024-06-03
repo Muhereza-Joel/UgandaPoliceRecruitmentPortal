@@ -23,7 +23,6 @@
           <div class="card-body">
             <h5 class="card-title">Create New Aptitude Test</h5>
 
-
             <!-- Custom Styled Validation with Tooltips -->
             <form class="row g-3 needs-validation" novalidate="" id="create-test-form">
               <div class="col-md-12 position-relative">
@@ -60,7 +59,6 @@
                 </div>
               </div>
 
-
               <div class="col-12">
                 <button class="btn btn-primary btn-sm" type="submit">Create Test</button>
               </div>
@@ -76,7 +74,7 @@
             <h5 class="card-title">Current Tests in the system</h5>
 
             <!-- Table with stripped rows -->
-            <table class="table table-striped">
+            <table class="table table-striped" id="exams-table">
               <thead>
                 <tr>
                   <th scope="col">#</th>
@@ -101,16 +99,15 @@
                       <div class="dropdown-menu" aria-labelledby="actionDropdown">
 
                         @if($role == 'Administrator')
-                        <a href="#" class="dropdown-item" >
+                        <a href="#" class="dropdown-item">
                           Edit Test Details
                         </a>
                         <a href="/{{$appName}}/manage-exams/test/add-questions?test_id={{$test['test_id']}}" class="dropdown-item icon" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="Questions you add to this test will be the ones applicants will answer when shortlisted and allowed to take aptitude test">
                           Add Questions To Test.
                         </a>
-                        <a href="#" class="dropdown-item icon text-danger">
+                        <a href="/{{$appName}}/test/delete/" class="dropdown-item icon text-danger" id="remove-btn" data-test-id="{{$test['test_id']}}">
                           Delete Test
                         </a>
-
                         @endif
                       </div>
                     </div>
@@ -125,23 +122,39 @@
           </div>
         </div>
 
-
       </div>
     </div>
 
   </section>
+  <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-dark" id="confirmDeleteModalLabel">Confirm Your Action</h5>
 
+        </div>
+        <div class="modal-body">
+          <h6 class="text-dark">Are you sure you want to execute this action?</h6>
+          <div class="alert alert-danger mt-2">Note that this action will delete the test with all its questions.</div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm" id="cancel-btn" data-dismiss="modal">Cancel</button>
+          <button type="button" id="confirmDeleteBtn" class="btn btn-danger btn-sm">Yes, Delete Test</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </main><!-- End #main -->
 
 @include('partials/footer')
 
 <script>
   $(document).ready(function() {
+
     $("#create-test-form").submit(function(event) {
       event.preventDefault();
 
       if (this.checkValidity() === true) {
-
         let formData = new FormData(this);
 
         $.ajax({
@@ -160,21 +173,57 @@
             }).showToast();
 
             setTimeout(function() {
-              window.location.reload()
-            }, 4500)
+              window.location.reload();
+            }, 4500);
           },
           error: function(response) {
             Toastify({
-              text: response.message || "An Error Occured",
+              text: response.message || "An Error Occurred",
               duration: 4000,
               gravity: 'bottom',
               position: 'left',
               backgroundColor: 'red',
             }).showToast();
           }
-        })
-
+        });
       }
-    })
-  })
+    });
+
+    let testId;
+
+    $('#exams-table').on('click', '#remove-btn', function(event) {
+      event.preventDefault();
+      testId = $(this).data('test-id');
+      $('#confirmDeleteModal').modal('show');
+    });
+
+    $('#confirmDeleteModal').on('click', '#confirmDeleteBtn', function() {
+      $.ajax({
+        method: "POST",
+        url: "/{{$appName}}/test/delete/",
+        data: {
+          id: testId
+        },
+        success: function(response) {
+          Toastify({
+            text: response.message || 'Test deleted successfully',
+            duration: 2000,
+            gravity: 'bottom',
+            backgroundColor: 'green',
+          }).showToast();
+
+          setTimeout(function() {
+            window.location.reload();
+          }, 2300);
+        },
+        error: function(xhr, status, error) {
+          console.error(xhr.responseText);
+        }
+      });
+    });
+
+    $('#cancel-btn').click(function() {
+      $('#confirmDeleteModal').modal('hide');
+    });
+  });
 </script>
