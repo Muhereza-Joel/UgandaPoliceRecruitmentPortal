@@ -611,4 +611,85 @@ class Model
         // Return the result with a 200 HTTP status
         return ['httpStatus' => 200, 'response' => $rows];
     }
+
+    public function get_pending_applications_count()
+    {
+        $count = 0;
+        $query = "SELECT COUNT(*) FROM application WHERE status = 'pending'";
+
+        $stmt = $this->database->prepare($query);
+        $stmt->execute();
+        $stmt->bind_result($count);
+
+        $stmt->fetch();
+
+        $stmt->close();
+
+        return $count;
+    }
+
+    public function get_reviewing_applications_count()
+    {
+        $count = 0;
+        $query = "SELECT COUNT(*) FROM application WHERE status = 'reviewing'";
+
+        $stmt = $this->database->prepare($query);
+        $stmt->execute();
+        $stmt->bind_result($count);
+
+        $stmt->fetch();
+
+        $stmt->close();
+
+        return $count;
+    }
+
+    public function get_rejected_applications_count()
+    {
+        $count = 0;
+        $query = "SELECT COUNT(*) FROM application WHERE status = 'rejected'";
+
+        $stmt = $this->database->prepare($query);
+        $stmt->execute();
+        $stmt->bind_result($count);
+
+        $stmt->fetch();
+
+        $stmt->close();
+
+        return $count;
+    }
+
+    public function get_accepted_applications_count()
+    {
+        $count = 0;
+        $query = "SELECT COUNT(*) FROM application WHERE status = 'accepted'";
+
+        $stmt = $this->database->prepare($query);
+        $stmt->execute();
+        $stmt->bind_result($count);
+
+        $stmt->fetch();
+
+        $stmt->close();
+
+        return $count;
+    }
+
+    public function get_shortlisted_applicants_count()
+    {
+        $count = 0;
+        $query = "SELECT COUNT(*) FROM shortlist";
+
+        $stmt = $this->database->prepare($query);
+        $stmt->execute();
+        $stmt->bind_result($count);
+
+        $stmt->fetch();
+
+        $stmt->close();
+
+        return $count;
+    }
+
 }

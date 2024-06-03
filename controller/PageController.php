@@ -58,6 +58,12 @@ class PageController
     public function render_dashboard()
     {
 
+        $short_list_count = $this->model->get_shortlisted_applicants_count();
+        $pending_applications_count = $this->model->get_pending_applications_count();
+        $reviewing_applications_count = $this->model->get_reviewing_applications_count();
+        $accepted_applications_count = $this->model->get_accepted_applications_count();
+        $rejected_applications_count = $this->model->get_rejected_applications_count();
+
         $html = $this->blade_view->render('dashboard', [
             'pageTitle' => " $this->app_name dashboard",
             'appName' => $this->app_name,
@@ -66,6 +72,11 @@ class PageController
             'username' => Session::get('username'),
             'role' => Session::get('role'),
             'avator' => Session::get('avator'),
+            'shorlistCount' => $short_list_count,
+            'pendingCount' => $pending_applications_count,
+            'reviewingCount' => $reviewing_applications_count,
+            'acceptedCount' => $accepted_applications_count,
+            'rejectedCount' => $rejected_applications_count,
 
         ]);
 
