@@ -246,10 +246,11 @@ class Model
 
     public function get_application_details($application_id)
     {
-        $query = "SELECT ap.application_id, ap.status, up.name, up.nin, up.dob, up.gender, up.about, up.company, up.job, up.country, up.phone, up.image_url, up.district, up.village, jp.title, jp.description, files.url AS file_url, ap.created_at FROM application ap 
+        $query = "SELECT ap.application_id, ap.status, up.name, up.nin, up.dob, up.gender, up.about, up.company, up.job, up.country, up.phone, up.image_url, up.district, up.village, jp.title, jp.description, ap.created_at,
+        (SELECT files.url FROM files WHERE files.application_id = ap.application_id) AS file_url
+        FROM application ap 
         JOIN user_profile up ON ap.applicant_id = up.user_id
         JOIN job_positions jp ON jp.id = ap.position_id
-        JOIN files ON files.application_id = ap.applicant_id
         WHERE ap.application_id = ?
         ";
 
